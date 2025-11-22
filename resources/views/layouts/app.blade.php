@@ -12,6 +12,11 @@
         background-color: #f0f6ff;
         /* biru muda mirip blue-200 Tailwind */
     }
+
+    .content-scroll {
+        height: 100vh;
+        overflow-y: auto;
+    }
 </style>
 
 <body>
@@ -41,9 +46,14 @@
 
                         if (auth()->user()->role === 'admin') {
                             $menuItems = [
-                                ['label' => 'Dashboard Admin', 'url' => '/admin/dashboard', 'icon' => 'bi-speedometer2'],
-                                ['label' => 'Kelola User', 'url' => '/admin/users', 'icon' => 'bi-people'],
-                                ['label' => 'Laporan', 'url' => '/admin/report', 'icon' => 'bi-file-earmark-text'],
+                                ['label' => 'Dashboard', 'url' => '/admin/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Data Pengguna', 'url' => '/admin/DataPengguna', 'icon' => 'bi-person-badge'],
+                                ['label' => 'Data Pelanggan', 'url' => '/admin/DataPelanggan', 'icon' => 'bi-person-vcard'],
+                                ['label' => 'Data Kendaraan', 'url' => '/admin/DataKendaraan', 'icon' => 'bi-car-front-fill'],
+                                ['label' => 'Kontrak Leasing', 'url' => '/admin/KontrakLeasing', 'icon' => 'bi-journal-text'],
+                                ['label' => 'Pembayaran', 'url' => '/admin/Pembayaran', 'icon' => 'bi-cash-stack'],
+                                ['label' => 'Laporan', 'url' => '/admin/Laporan', 'icon' => 'bi-bar-chart-line'],
+                                ['label' => 'Profil', 'url' => '/admin/profil', 'icon' => 'bi-person-circle'],
                             ];
                         } elseif (auth()->user()->role === 'pelanggan') {
                             $menuItems = [
@@ -86,7 +96,7 @@
         </div>
 
         <!-- Content -->
-        <div class="p-4 flex-grow-1">
+        <div class="p-4 flex-grow-1 content-scroll">
             @yield('content')
         </div>
 
