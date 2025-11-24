@@ -10,7 +10,7 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <div>
                     <h5 class="mb-1">Manajemen Pembayaran</h5>
-                    <small class="text-muted">3 pembayaran tercatat dalam sistem</small>
+                    <small class="text-muted">{{ $angsuran->count() }} pembayaran tercatat dalam sistem</small>
                 </div>
 
                 <!-- Tombol Tambah Pembayaran -->
@@ -38,194 +38,147 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-
                         <tbody>
-
-                            <!-- Baris Dummy 1 -->
-                            <tr>
-                                <td>
-                                    <i class="bi bi-credit-card me-1 text-secondary"></i>
-                                    <span class="font-monospace">ANG-001</span>
-                                </td>
-                                <td>Ahmad Putra</td>
-                                <td>
-                                    <i class="bi bi-file-text me-1 text-secondary"></i>
-                                    KTR-001
-                                </td>
-                                <td><span class="badge bg-secondary">1</span></td>
-                                <td>Rp 2.300.000</td>
-                                <td><span class="text-muted">-</span></td>
-                                <td><strong>Rp 2.300.000</strong></td>
-                                <td>
-                                    <i class="bi bi-calendar me-1 text-secondary"></i>
-                                    01 Jan
-                                </td>
-                                <td>01 Jan 2024</td>
-                                <td>
-                                    <span class="badge bg-outline border text-dark">🏦 Transfer</span>
-                                </td>
-                                <td><span class="text-muted">-</span></td>
-                                <td>
-                                    <span class="badge bg-success">
-                                        <i class="bi bi-check-circle me-1"></i>Lunas
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <!-- Baris Dummy 2 -->
-                            <tr>
-                                <td>
-                                    <i class="bi bi-credit-card me-1 text-secondary"></i>
-                                    <span class="font-monospace">ANG-002</span>
-                                </td>
-                                <td>Dina Lestari</td>
-                                <td>
-                                    <i class="bi bi-file-text me-1 text-secondary"></i>
-                                    KTR-002
-                                </td>
-                                <td><span class="badge bg-secondary">2</span></td>
-                                <td>Rp 1.900.000</td>
-                                <td>
-                                    <span class="text-danger fw-bold">Rp 100.000</span>
-                                </td>
-                                <td><strong>Rp 2.000.000</strong></td>
-                                <td>
-                                    <i class="bi bi-calendar me-1 text-secondary"></i>
-                                    10 Feb
-                                </td>
-                                <td>—</td>
-                                <td><span class="badge bg-outline border">📱 E-Wallet</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i> Lihat
-                                    </button>
-                                </td>
-                                <td>
-                                    <span class="badge bg-warning text-dark">
-                                        <i class="bi bi-clock me-1"></i> Tertunda
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <!-- Baris Dummy 3 -->
-                            <tr>
-                                <td>
-                                    <i class="bi bi-credit-card me-1 text-secondary"></i>
-                                    <span class="font-monospace">ANG-003</span>
-                                </td>
-                                <td>Budi Santoso</td>
-                                <td>
-                                    <i class="bi bi-file-text me-1 text-secondary"></i>
-                                    KTR-003
-                                </td>
-                                <td><span class="badge bg-secondary">3</span></td>
-                                <td>Rp 2.000.000</td>
-                                <td><span class="text-muted">-</span></td>
-                                <td><strong>Rp 2.000.000</strong></td>
-                                <td>
-                                    <i class="bi bi-calendar me-1 text-secondary"></i>
-                                    15 Mar
-                                </td>
-                                <td>15 Mar 2024</td>
-                                <td><span class="badge bg-outline border">💵 Tunai</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye"></i> Lihat
-                                    </button>
-                                </td>
-                                <td>
-                                    <span class="badge bg-success">
-                                        <i class="bi bi-check-circle me-1"></i>Lunas
-                                    </span>
-                                </td>
-                            </tr>
-
+                            @foreach ($angsuran as $a)
+                                <tr>
+                                    <td>
+                                        <i class="bi bi-credit-card me-1 text-secondary"></i>
+                                        <span
+                                            class="font-monospace">ANG-{{ str_pad($a->angsuran_id, 3, '0', STR_PAD_LEFT) }}</span>
+                                    </td>
+                                    <td>{{ $a->kontrak->pelanggan?->nama_lengkap ?? '-' }}</td>
+                                    <td>
+                                        <i class="bi bi-file-text me-1 text-secondary"></i>
+                                        {{ $a->kontrak->nomor_kontrak ?? '-' }}
+                                    </td>
+                                    <td><span class="badge bg-secondary">{{ $a->angsuran_ke }}</span></td>
+                                    <td>Rp {{ number_format($a->jumlah_bayar, 0, ',', '.') }}</td>
+                                    <td>{{ $a->denda ? 'Rp ' . number_format($a->denda, 0, ',', '.') : '-' }}</td>
+                                    <td><strong>Rp
+                                            {{ number_format(($a->jumlah_bayar ?? 0) + ($a->denda ?? 0), 0, ',', '.') }}</strong>
+                                    </td>
+                                    <td>
+                                        <i class="bi bi-calendar me-1 text-secondary"></i>
+                                        {{ \Carbon\Carbon::parse($a->tanggal_jatuh_tempo)->format('d M Y') }}
+                                    </td>
+                                    <td>
+                                        {{ $a->tanggal_bayar ? \Carbon\Carbon::parse($a->tanggal_bayar)->format('d M Y') : '-' }}
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                                                                @if($a->metode_pembayaran == 'transfer') bg-outline border text-dark
+                                                                                @elseif($a->metode_pembayaran == 'cash') bg-outline border text-dark
+                                                                                @elseif($a->metode_pembayaran == 'ewallet') bg-outline border text-dark
+                                                                                @endif">
+                                            {{ ucfirst($a->metode_pembayaran) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if($a->bukti_pembayaran)
+                                            <a href="{{ asset('storage/' . $a->bukti_pembayaran) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-primary">Lihat</a>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge 
+                                        @if($a->status_angsuran == 'lunas') bg-success
+                                        @elseif($a->status_angsuran == 'tertunda') bg-warning text-dark
+                                        @else bg-secondary @endif">
+                                            {{ ucfirst($a->status_angsuran) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
+
     </div>
 
     <!-- MODAL TAMBAH PEMBAYARAN -->
     <div class="modal fade" id="modalTambahPembayaran" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Pembayaran Manual</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="row g-3">
-
-                        <div class="col-md-6">
-                            <label class="form-label">Pilih Kontrak *</label>
-                            <select class="form-select">
-                                <option>Pilih kontrak leasing</option>
-                                <option>KTR-001 - Ahmad Putra</option>
-                                <option>KTR-002 - Dina Lestari</option>
-                                <option>KTR-003 - Budi Santoso</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Angsuran Ke *</label>
-                            <input type="number" class="form-control" placeholder="1">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Jumlah Bayar (Rp) *</label>
-                            <input type="number" class="form-control" placeholder="7500000">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Denda (Rp)</label>
-                            <input type="number" class="form-control" placeholder="0">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Tanggal Bayar *</label>
-                            <input type="date" class="form-control">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Tanggal Jatuh Tempo *</label>
-                            <input type="date" class="form-control">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Metode Pembayaran *</label>
-                            <select class="form-select">
-                                <option value="">Pilih metode</option>
-                                <option value="transfer">Transfer Bank</option>
-                                <option value="cash">Tunai</option>
-                                <option value="ewallet">E-Wallet</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Status Pembayaran *</label>
-                            <select class="form-select">
-                                <option value="lunas">Lunas</option>
-                                <option value="tertunda">Tertunda</option>
-                            </select>
-                        </div>
-
+                <form action="{{ route('admin.Pembayaran.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Pembayaran Manual</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
 
-                <div class="modal-footer">
-                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button class="btn btn-primary">
-                        <i class="bi bi-check-circle me-1"></i> Simpan Pembayaran
-                    </button>
-                </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Pilih Kontrak *</label>
+                                <select name="kontrak_id" class="form-select" required>
+                                    <option value="">Pilih kontrak leasing</option>
+                                    @foreach($kontrak as $k)
+                                        <option value="{{ $k->kontrak_id }}">
+                                            {{ $k->nomor_kontrak }} - {{ $k->pelanggan?->nama_lengkap ?? '-' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
+                            <div class="col-md-6">
+                                <label class="form-label">Angsuran Ke *</label>
+                                <input type="number" name="angsuran_ke" class="form-control" placeholder="1" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Jumlah Bayar (Rp) *</label>
+                                <input type="number" name="jumlah_bayar" class="form-control" placeholder="7500000"
+                                    required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Denda (Rp)</label>
+                                <input type="number" name="denda" class="form-control" placeholder="0">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Tanggal Bayar *</label>
+                                <input type="date" name="tanggal_bayar" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Tanggal Jatuh Tempo *</label>
+                                <input type="date" name="tanggal_jatuh_tempo" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Metode Pembayaran *</label>
+                                <select name="metode_pembayaran" class="form-select" required>
+                                    <option value="">Pilih metode</option>
+                                    <option value="transfer">Transfer Bank</option>
+                                    <option value="cash">Tunai</option>
+                                    <option value="ewallet">E-Wallet</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Status Pembayaran *</label>
+                                <select name="status_angsuran" class="form-select" required>
+                                    <option value="lunas">Lunas</option>
+                                    <option value="tertunda">Tertunda</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i> Simpan Pembayaran
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

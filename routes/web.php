@@ -3,6 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\KontrakLeasingController;
+use App\Http\Controllers\AngsuranController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfilController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,37 +20,38 @@ Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.process');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-//CRUDNYA USER
-Route::resource('user', UserController::class);
+// Halaman utama
 
-// Dashboard-route sesuai role
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
-Route::get('/admin/DataPengguna', function () {
-    return view('admin.DataPengguna');
-});
-Route::get('/admin/DataPelanggan', function () {
-    return view('admin.DataPelanggan');
-});
-Route::get('/admin/DataKendaraan', function () {
-    return view('admin.DataKendaraan');
-});
-Route::get('/admin/KontrakLeasing', function () {
-    return view('admin.KontrakLeasing');
-});
-Route::get('/admin/Pembayaran', function () {
-    return view('admin.Pembayaran');
-});
-Route::get('/admin/Laporan', function () {
-    return view('admin.Laporan');
-});
-Route::get('/admin/profil', function () {
-    return view('admin.profil');
-});
+
+
+//dashboard admin
+Route::get('/admin/dashboard', [DashboardController::class, 'adminDashboard'])
+    ->name('admin.dashboard');
+
+Route::get('/admin/DataPengguna', [UserController::class, 'indexAdmin'])
+    ->name('admin.DataPengguna');
+
+Route::get('/admin/DataPelanggan', [PelangganController::class, 'index'])
+    ->name('admin.DataPelanggan');
+
+Route::get('/admin/DataKendaraan', [KendaraanController::class, 'index'])
+    ->name('admin.DataKendaraan');
+
+Route::get('/admin/KontrakLeasing', [KontrakLeasingController::class, 'index'])
+    ->name('admin.KontrakLeasing');
+
+Route::put('/admin/KontrakLeasing/{kontrak:kontrak_id}/verifikasi', [KontrakLeasingController::class, 'verifikasi'])
+    ->name('admin.KontrakLeasing.verifikasi');
+
+Route::get('/admin/Pembayaran', [AngsuranController::class, 'index'])->name('admin.Pembayaran');
+Route::post('/admin/Pembayaran', [AngsuranController::class, 'store'])->name('admin.Pembayaran.store');
+
+Route::get('/admin/Laporan', [LaporanController::class, 'index'])->name('admin.Laporan');
+
+Route::get('/admin/profil', [ProfilController::class, 'index'])->name('admin.profil');
+Route::post('/admin/profil/update', [ProfilController::class, 'update'])->name('admin.profil.update');
+Route::post('/admin/profil/password', [ProfilController::class, 'updatePassword'])->name('admin.profil.password');
+
 
 Route::get('/marketing/dashboard', function () {
     return view('marketing.dashboard');
@@ -57,3 +65,9 @@ Route::get('/manajer/dashboard', function () {
     return view('manajer.dashboard');
 })->name('manajer.dashboard');
 
+
+//crudnya
+Route::resource('user', UserController::class);
+Route::resource('pelanggan', PelangganController::class);
+Route::resource('kendaraan', KendaraanController::class);
+Route::resource('kontrak', KontrakLeasingController::class);

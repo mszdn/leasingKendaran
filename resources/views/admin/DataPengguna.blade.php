@@ -38,37 +38,121 @@
 
                         <tbody>
 
-                            <!-- Row 1 -->
-                            <tr>
-                                <td>Admin User</td>
-                                <td>admin@lease.com</td>
-                                <td><span class="badge bg-primary">Admin</span></td>
-                                <td><span class="badge bg-success">Aktif</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-outline-secondary btn-sm">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            @foreach ($users as $u)
+                                <tr>
+                                    <td>{{ $u->nama_lengkap ?? '-' }}</td>
+                                    <td>{{ $u->email ?? '-' }}</td>
 
-                            <!-- Row 2 -->
-                            <tr>
-                                <td>Marketing Team</td>
-                                <td>marketing@lease.com</td>
-                                <td><span class="badge bg-warning text-dark">Marketing</span></td>
-                                <td><span class="badge bg-success">Aktif</span></td>
-                                <td class="text-end">
-                                    <button class="btn btn-outline-secondary btn-sm">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                    <td>
+                                        @if ($u->role === 'admin')
+                                            <span class="badge bg-primary">Admin</span>
+                                        @elseif ($u->role === 'marketing')
+                                            <span class="badge bg-warning text-dark">Marketing</span>
+                                        @elseif ($u->role === 'manajer')
+                                            <span class="badge bg-info text-dark">Manajer</span>
+                                        @else
+                                            <span class="badge bg-secondary">Pelanggan</span>
+                                        @endif
+                                    </td>
+
+                                    <td>
+                                        @if ($u->is_active)
+                                            <span class="badge bg-success">Aktif</span>
+                                        @else
+                                            <span class="badge bg-danger">Nonaktif</span>
+                                        @endif
+                                    </td>
+
+                                    <td class="text-end">
+
+                                        <!-- Edit (tombol buka modal per user) -->
+                                        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalEdit{{ $u->user_id }}">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                        <!-- Delete -->
+                                        <form action="{{ route('user.destroy', $u->user_id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                onclick="return confirm('Hapus pengguna ini?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    </td>
+                                </tr>
+
+                                {{-- MODAL EDIT — taruh di dalam loop supaya $u tersedia --}}
+                                <div class="modal fade" id="modalEdit{{ $u->user_id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <form action="{{ route('user.update', $u->user_id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Edit Pengguna</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Nama Lengkap</label>
+                                                        <input type="text" name="nama_lengkap" class="form-control"
+                                                            value="{{ $u->nama_lengkap }}" required>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Username *</label>
+                                                        <input type="text" name="username" class="form-control"
+                                                            value="{{ $u->username }}" required>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Email *</label>
+                                                        <input type="email" name="email" class="form-control"
+                                                            value="{{ $u->email }}" required>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">
+                                                            Password <small class="text-muted">(kosongkan jika tidak
+                                                                diganti)</small>
+                                                        </label>
+                                                        <input type="password" name="password" class="form-control">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Peran *</label>
+                                                        <select name="role" class="form-control" required>
+                                                            <option value="admin" {{ $u->role === 'admin' ? 'selected' : '' }}>
+                                                                Admin</option>
+                                                            <option value="marketing" {{ $u->role === 'marketing' ? 'selected' : '' }}>Marketing</option>
+                                                            <option value="manajer" {{ $u->role === 'manajer' ? 'selected' : '' }}>Manajer</option>
+                                                            <option value="pelanggan" {{ $u->role === 'pelanggan' ? 'selected' : '' }}>Pelanggan</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button class="btn btn-primary">Update</button>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- END MODAL EDIT --}}
+
+                            @endforeach
 
                         </tbody>
 
@@ -80,35 +164,59 @@
     </div>
 
 
-    <!-- Modal Tambah Pengguna -->
+    {{-- MODAL TAMBAH (tetap di luar loop) --}}
     <div class="modal fade" id="modalTambah" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Pengguna Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+                <form action="{{ route('user.store') }}" method="POST">
+                    @csrf
 
-                <div class="modal-body">
-
-                    <div class="mb-3">
-                        <label class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" placeholder="John Doe">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Pengguna Baru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" placeholder="john@contoh.com">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" name="nama_lengkap" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Username *</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password *</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Peran *</label>
+                            <select name="role" class="form-control" required>
+                                <option value="admin">Admin</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="manajer">Manajer</option>
+                                <option value="pelanggan">Pelanggan</option>
+                            </select>
+                        </div>
+
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Peran</label>
-                        <input type="text" class="form-control" placeholder="Admin, Marketing, Manajer">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button class="btn btn-primary">Simpan</button>
                     </div>
 
-                    <button class="btn btn-primary w-100">Buat Pengguna</button>
-                </div>
+                </form>
 
             </div>
         </div>

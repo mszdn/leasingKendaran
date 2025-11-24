@@ -16,23 +16,23 @@
 
                         {{-- Avatar --}}
                         <div class="position-relative d-inline-block">
-                            <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail mb-3" width="130"
-                                height="130">
+                            <img src="{{ $user->foto_profil ?? 'https://via.placeholder.com/150' }}"
+                                class="rounded-circle img-thumbnail mb-3" width="130" height="130">
 
                             <label class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2"
                                 style="cursor:pointer;">
                                 <i class="bi bi-camera-fill"></i>
-                                <input type="file" class="d-none">
+                                <input type="file" class="d-none" name="foto_profil">
                             </label>
                         </div>
 
-                        <h5 class="mb-0">Nama Pengguna</h5>
-                        <p class="text-muted text-capitalize">Role Pengguna</p>
+                        <h5 class="mb-0">{{ $user->nama_lengkap }}</h5>
+                        <p class="text-muted text-capitalize">{{ $user->role }}</p>
 
                         <div class="mt-3 text-start small text-muted">
-                            <div class="mb-2"><i class="bi bi-envelope"></i> user@email.com</div>
-                            <div class="mb-2"><i class="bi bi-telephone"></i> 0812-3456-7890</div>
-                            <div class="mb-2"><i class="bi bi-geo-alt"></i> Semarang</div>
+                            <div class="mb-2"><i class="bi bi-envelope"></i> {{ $user->email }}</div>
+                            <div class="mb-2"><i class="bi bi-telephone"></i> {{ $user->no_hp }}</div>
+                            <div class="mb-2"><i class="bi bi-geo-alt"></i> {{ $user->alamat }}</div>
                         </div>
                     </div>
                 </div>
@@ -85,64 +85,45 @@
                                 <small class="text-muted">Perbarui informasi pribadi Anda di sini</small>
                             </div>
                             <div class="card-body">
-                                <form class="row g-3">
+                                <form class="row g-3" action="{{ route('admin.profil.update') }}" method="POST">
+                                    @csrf
 
                                     <div class="col-md-6">
                                         <label class="form-label">Nama Lengkap *</label>
-                                        <input type="text" class="form-control" value="Nama User">
+                                        <input type="text" name="nama_lengkap" class="form-control"
+                                            value="{{ $user->nama_lengkap }}">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Alamat Email *</label>
-                                        <input type="email" class="form-control" value="user@email.com">
+                                        <input type="email" name="email" class="form-control" value="{{ $user->email }}">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Nomor Telepon *</label>
-                                        <input type="text" class="form-control" value="081234567890">
+                                        <input type="text" name="no_hp" class="form-control" value="{{ $user->no_hp }}">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Tanggal Lahir</label>
-                                        <input type="date" class="form-control">
+                                        <input type="date" name="tanggal_lahir" class="form-control"
+                                            value="{{ $user->tanggal_lahir }}">
                                     </div>
 
                                     <div class="col-12">
                                         <label class="form-label">Alamat</label>
-                                        <input type="text" class="form-control" value="Alamat Lengkap">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label class="form-label">Kota</label>
-                                        <input type="text" class="form-control" value="Semarang">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label class="form-label">Kode Pos</label>
-                                        <input type="text" class="form-control" value="50123">
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label class="form-label">Negara</label>
-                                        <select class="form-select">
-                                            <option>Indonesia</option>
-                                            <option>Malaysia</option>
-                                            <option>Singapore</option>
-                                        </select>
+                                        <input type="text" name="alamat" class="form-control" value="{{ $user->alamat }}">
                                     </div>
 
                                     <div class="col-12">
                                         <label class="form-label">Bio</label>
-                                        <textarea rows="4" class="form-control"
-                                            placeholder="Ceritakan tentang diri Anda..."></textarea>
+                                        <textarea rows="4" name="bio" class="form-control">{{ $user->bio }}</textarea>
                                     </div>
 
                                     <div>
-                                        <button class="btn btn-primary">
-                                            <i class="bi bi-save me-1"></i> Simpan Perubahan
-                                        </button>
+                                        <button class="btn btn-primary"><i class="bi bi-save me-1"></i> Simpan
+                                            Perubahan</button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>
@@ -156,21 +137,22 @@
                                 <small class="text-muted">Pastikan kata sandi Anda kuat dan aman</small>
                             </div>
                             <div class="card-body">
-                                <form class="row g-3">
+                                <form class="row g-3" action="{{ route('admin.profil.password') }}" method="POST">
+                                    @csrf
 
                                     <div class="col-12">
                                         <label class="form-label">Kata Sandi Saat Ini *</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="current_password" class="form-control">
                                     </div>
 
                                     <div class="col-12">
                                         <label class="form-label">Kata Sandi Baru *</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="password" class="form-control">
                                     </div>
 
                                     <div class="col-12">
                                         <label class="form-label">Konfirmasi Kata Sandi Baru *</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="password_confirmation" class="form-control">
                                     </div>
 
                                     <div class="alert alert-primary small">
@@ -187,43 +169,11 @@
                                     <button class="btn btn-primary">
                                         <i class="bi bi-shield-lock me-1"></i> Perbarui Kata Sandi
                                     </button>
-
                                 </form>
                             </div>
                         </div>
+                    </div>
 
-                        {{-- Pengaturan Keamanan --}}
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">Pengaturan Keamanan</h5>
-                                <small class="text-muted">Kelola opsi keamanan tambahan untuk akun Anda</small>
-                            </div>
-                            <div class="card-body">
-
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div>
-                                        <label class="fw-bold">Autentikasi Dua Faktor</label>
-                                        <p class="text-muted small">Tambahkan lapisan keamanan ekstra ke akun Anda</p>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <label class="fw-bold">Peringatan Login</label>
-                                        <p class="text-muted small">Terima notifikasi saat ada login baru</p>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" checked>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div> {{-- end tab keamanan --}}
                 </div>
             </div>
         </div>
