@@ -31,7 +31,7 @@ class KontrakLeasing extends Model
 
     public function pelanggan()
     {
-        return $this->belongsTo(Pelanggan::class, 'user_id', 'user_id');
+        return $this->belongsTo(Pelanggan::class, 'pelanggan_id', 'pelanggan_id');
     }
 
     public function kendaraan()

@@ -39,9 +39,15 @@ Route::get('/admin/DataKendaraan', [KendaraanController::class, 'index'])
 
 Route::get('/admin/KontrakLeasing', [KontrakLeasingController::class, 'index'])
     ->name('admin.KontrakLeasing');
-
-Route::put('/admin/KontrakLeasing/{kontrak:kontrak_id}/verifikasi', [KontrakLeasingController::class, 'verifikasi'])
+Route::put('/kontrak/verifikasi/{kontrak}', [KontrakLeasingController::class, 'verifikasi'])
     ->name('admin.KontrakLeasing.verifikasi');
+Route::put('/kontrak/reject/{kontrak}', [KontrakLeasingController::class, 'reject'])
+    ->name('admin.KontrakLeasing.reject');
+Route::post('/admin/kontrak/store', [KontrakLeasingController::class, 'store'])->name('kontrak.store');
+Route::put('/admin/kontrak/update/{kontrak}', [KontrakLeasingController::class, 'update'])->name('kontrak.update');
+Route::delete('/admin/kontrak/delete/{kontrak}', [KontrakLeasingController::class, 'destroy'])->name('kontrak.delete');
+
+
 
 Route::get('/admin/Pembayaran', [AngsuranController::class, 'index'])->name('admin.Pembayaran');
 Route::post('/admin/Pembayaran', [AngsuranController::class, 'store'])->name('admin.Pembayaran.store');

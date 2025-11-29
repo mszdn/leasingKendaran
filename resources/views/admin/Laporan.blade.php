@@ -10,29 +10,48 @@
         <div class="row mb-4">
             <!-- Total Pendapatan -->
             <div class="col-md-6 mb-3">
-                <div class="card border-start border-success border-4">
+                <div class="card" style="
+                        border-left: 4px solid #198754;
+                        border-right: 4px solid #198754;
+                        border-top: 1px solid #dee2e6;
+                        border-bottom: 1px solid #dee2e6;
+                        border-radius: .375rem;
+                    ">
                     <div class="card-body">
                         <h5 class="card-title d-flex align-items-center gap-2">
                             <i class="bi bi-graph-up text-success"></i> Total Pendapatan
                         </h5>
-                        <div class="fs-2 fw-semibold text-dark">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
-                        <p class="text-muted small mb-0">Dari {{ $laporan->count() }} periode</p>
+                        <div class="fs-2 fw-semibold text-dark">
+                            Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
+                        </div>
+                        <p class="text-muted small mb-0">
+                            Dari {{ $laporan->count() }} periode
+                        </p>
                     </div>
                 </div>
             </div>
 
             <!-- Total Tunggakan -->
             <div class="col-md-6 mb-3">
-                <div class="card border-start border-danger border-4">
+                <div class="card" style="
+                border-left: 4px solid #dc3545;
+                border-right: 4px solid #dc3545;
+                border-top: 1px solid #dee2e6;
+                border-bottom: 1px solid #dee2e6;
+                border-radius: .375rem;
+            ">
                     <div class="card-body">
                         <h5 class="card-title d-flex align-items-center gap-2">
                             <i class="bi bi-exclamation-circle text-danger"></i> Total Tunggakan
                         </h5>
-                        <div class="fs-2 fw-semibold text-dark">Rp {{ number_format($totalTunggakan, 0, ',', '.') }}</div>
+                        <div class="fs-2 fw-semibold text-dark">
+                            Rp {{ number_format($totalTunggakan, 0, ',', '.') }}
+                        </div>
                         <p class="text-muted small mb-0">Perlu ditindaklanjuti</p>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- LIST LAPORAN PER PERIODE -->
@@ -44,7 +63,13 @@
                 @endphp
 
                 <div class="col-12 mb-4">
-                    <div class="card border-start border-primary border-4">
+                    <div class="card" style="
+                        border-left: 4px solid #0d6efd;
+                        border-right: 4px solid #0d6efd;
+                        border-top: 1px solid #dee2e6;
+                        border-bottom: 1px solid #dee2e6;
+                        border-radius: .375rem;
+                    ">
                         <div class="card-body">
                             <h5 class="card-title d-flex align-items-center gap-2">
                                 <i class="bi bi-bar-chart text-primary"></i>
@@ -56,7 +81,8 @@
                                     <label class="text-muted small d-flex align-items-center gap-1">
                                         <i class="bi bi-calendar"></i> Periode
                                     </label>
-                                    <div class="fw-semibold">{{ \Carbon\Carbon::parse($l->tanggal_laporan)->format('d F Y') }}
+                                    <div class="fw-semibold">
+                                        {{ \Carbon\Carbon::parse($l->tanggal_laporan)->format('d F Y') }}
                                     </div>
                                 </div>
 
@@ -64,7 +90,9 @@
                                     <label class="text-muted small d-flex align-items-center gap-1">
                                         <i class="bi bi-cash-stack text-success"></i> Pendapatan
                                     </label>
-                                    <div class="fw-semibold">Rp {{ number_format($l->total_pendapatan, 0, ',', '.') }}</div>
+                                    <div class="fw-semibold">
+                                        Rp {{ number_format($l->total_pendapatan, 0, ',', '.') }}
+                                    </div>
                                     <small
                                         class="text-{{ $l->total_pendapatan >= $pendapatanBersih ? 'success' : 'danger' }} d-flex align-items-center gap-1">
                                         <i
@@ -77,15 +105,21 @@
                                     <label class="text-muted small d-flex align-items-center gap-1">
                                         <i class="bi bi-exclamation-circle text-danger"></i> Tunggakan
                                     </label>
-                                    <div class="fw-semibold">Rp {{ number_format($l->total_tunggakan, 0, ',', '.') }}</div>
-                                    <small class="text-muted">{{ number_format($persenTunggakan, 2) }}% dari pendapatan</small>
+                                    <div class="fw-semibold">
+                                        Rp {{ number_format($l->total_tunggakan, 0, ',', '.') }}
+                                    </div>
+                                    <small class="text-muted">
+                                        {{ number_format($persenTunggakan, 2) }}% dari pendapatan
+                                    </small>
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="text-muted small d-flex align-items-center gap-1">
                                         <i class="bi bi-check-circle text-primary"></i> Pendapatan Bersih
                                     </label>
-                                    <div class="fw-semibold">Rp {{ number_format($pendapatanBersih, 0, ',', '.') }}</div>
+                                    <div class="fw-semibold">
+                                        Rp {{ number_format($pendapatanBersih, 0, ',', '.') }}
+                                    </div>
                                 </div>
                             </div>
 
@@ -106,5 +140,6 @@
 
             @endforeach
         </div>
+
     </div>
 @endsection
