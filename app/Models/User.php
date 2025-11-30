@@ -34,4 +34,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+     // RELASI: satu marketing bisa punya banyak kontrak
+    public function kontrak()
+    {
+        return $this->hasMany(\App\Models\KontrakLeasing::class, 'marketing_id', 'user_id');
+    }
 }

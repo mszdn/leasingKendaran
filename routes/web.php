@@ -11,6 +11,9 @@ use App\Http\Controllers\AngsuranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfilController;
 
+use App\Http\Controllers\ManajerController;
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -67,10 +70,25 @@ Route::get('/pelanggan/home', function () {
     return view('pelanggan.dashboard');
 })->name('pelanggan.home');
 
-Route::get('/manajer/dashboard', function () {
-    return view('manajer.dashboard');
-})->name('manajer.dashboard');
+//dashboard manajer
+Route::prefix('manajer')->group(function () {
 
+    Route::get('/dashboard', [ManajerController::class, 'dashboard'])
+        ->name('manajer.dashboard');
+
+    Route::get('/AnalisisKontrak', [ManajerController::class, 'AnalisisKontrak'])
+        ->name('manajer.AnalisisKontrak');
+
+    Route::get('/AnalisisPembayaran', [ManajerController::class, 'AnalisisPembayaran'])
+        ->name('manajer.AnalisisPembayaran');
+
+    Route::get('/LaporanPendapatan', [ManajerController::class, 'LaporanPendapatan'])
+        ->name('manajer.LaporanPendapatan');
+
+    Route::get('/MarketingPerformance', [ManajerController::class, 'MarketingPerformance'])
+        ->name('manajer.MarketingPerformance');
+
+});
 
 //crudnya
 Route::resource('user', UserController::class);

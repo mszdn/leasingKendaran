@@ -57,11 +57,16 @@
                             ];
                         } elseif (auth()->user()->role === 'pelanggan') {
                             $menuItems = [
-                                ['label' => 'Dashboard pelanggan', 'url' => '/pelanggan/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Dashboard pelanggan', 'url' => '/pelangan/dashboard', 'icon' => 'bi-speedometer2'],
                             ];
                         } elseif (auth()->user()->role === 'manajer') {
                             $menuItems = [
-                                ['label' => 'Dashboard manajer', 'url' => '/manajer/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Dashboard', 'url' => '/manajer/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Analisis Kontrak', 'url' => '/manajer/AnalisisKontrak', 'icon' => 'bi-journal-text'],
+                                ['label' => 'Analisis Pembayaran', 'url' => '/manajer/AnalisisPembayaran', 'icon' => 'bi-cash-stack'],
+                                ['label' => 'Laporan Pendapatan', 'url' => '/manajer/LaporanPendapatan', 'icon' => 'bi-bar-chart-line'],
+                                ['label' => 'Marketing Performance', 'url' => '/manajer/MarketingPerformance', 'icon' => 'bi-graph-up-arrow'],
+                                ['label' => 'Profil', 'url' => '/manajer/PageProfil', 'icon' => 'bi-person-circle'],
                             ];
                         } elseif (auth()->user()->role === 'marketing') {
                             $menuItems = [
