@@ -75,9 +75,9 @@
                                         {{-- STATUS VERIFIKASI --}}
                                         <td>
                                             <span class="badge 
-                                                                                            @if($k->status_verifikasi == 'pending') bg-warning text-dark
-                                                                                            @elseif($k->status_verifikasi == 'approved') bg-success
-                                                                                            @else bg-danger @endif">
+                                                                                                    @if($k->status_verifikasi == 'pending') bg-warning text-dark
+                                                                                                    @elseif($k->status_verifikasi == 'approved') bg-success
+                                                                                                    @else bg-danger @endif">
                                                 {{ $k->status_verifikasi }}
                                             </span>
                                         </td>
@@ -297,17 +297,12 @@
                             <input type="number" name="dp_amount" class="form-control" required>
                         </div>
 
-                        <div class="col-md-4">
-                            <label class="form-label">Angsuran / Bulan</label>
-                            <input type="number" name="angsuran_per_bulan" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Total Pembayaran</label>
                             <input type="number" name="total_pembayaran" class="form-control" required>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Status Kontrak</label>
                             <select name="status_kontrak" class="form-select" required>
                                 <option value="aktif">Aktif</option>
@@ -316,14 +311,9 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label">Tanggal Mulai</label>
-                            <input type="date" name="tanggal_mulai" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label">Tanggal Selesai</label>
-                            <input type="date" name="tanggal_selesai" class="form-control" required>
+                        {{-- ANGSRAN & TGL MULAI/SELESAI DIHAPUS KARENA AUTO --}}
+                        <div class="alert alert-info mt-3">
+                            Angsuran per bulan & tanggal mulai/selesai akan dihitung otomatis saat kontrak dibuat.
                         </div>
 
                     </div>

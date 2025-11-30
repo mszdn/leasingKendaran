@@ -16,7 +16,7 @@ class Angsuran extends Model
         'jumlah_bayar',
         'tanggal_jatuh_tempo',
         'tanggal_bayar',
-         'status_angsuran',
+        'status_angsuran',
         'metode_pembayaran',
         'denda',
         'bukti_pembayaran'

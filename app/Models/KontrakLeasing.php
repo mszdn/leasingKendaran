@@ -12,6 +12,7 @@ class KontrakLeasing extends Model
 
     protected $fillable = [
         'nomor_kontrak',
+        'pelanggan_id',   // ← WAJIB (perbaikan)
         'user_id',
         'kendaraan_id',
         'tenor_bulan',
@@ -41,6 +42,6 @@ class KontrakLeasing extends Model
 
     public function angsuran()
     {
-        return $this->hasMany(Angsuran::class, 'kontrak_id');
+        return $this->hasMany(Angsuran::class, 'kontrak_id', 'kontrak_id');
     }
 }
