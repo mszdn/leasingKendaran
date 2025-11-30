@@ -12,6 +12,7 @@ class KontrakLeasing extends Model
 
     protected $fillable = [
         'nomor_kontrak',
+        'pelanggan_id',
         'user_id',
         'kendaraan_id',
         'tenor_bulan',
@@ -31,16 +32,16 @@ class KontrakLeasing extends Model
 
     public function pelanggan()
     {
-        return $this->belongsTo(Pelanggan::class, 'user_id', 'user_id');
+        return $this->belongsTo(Pelanggan::class, 'pelanggan_id', 'pelanggan_id');
     }
 
     public function kendaraan()
     {
-        return $this->belongsTo(Kendaraan::class, 'kendaraan_id');
+        return $this->belongsTo(Kendaraan::class, 'kendaraan_id', 'kendaraan_id');
     }
 
     public function angsuran()
     {
-        return $this->hasMany(Angsuran::class, 'kontrak_id');
+        return $this->hasMany(Angsuran::class, 'kontrak_id', 'kontrak_id');
     }
 }

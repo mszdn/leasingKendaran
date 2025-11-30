@@ -27,6 +27,6 @@ class Pelanggan extends Model
 
     public function kontrak()
     {
-        return $this->hasMany(KontrakLeasing::class, 'user_id', 'user_id');
+        return $this->hasMany(KontrakLeasing::class, 'pelanggan_id', 'pelanggan_id');
     }
 }

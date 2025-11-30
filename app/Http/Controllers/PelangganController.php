@@ -2,53 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use App\Models\KontrakLeasing;
 
 class PelangganController extends Controller
 {
-    public function index()
+    /**
+     * Halaman utama pelanggan (kontrak leasing).
+     */
+    public function home()
     {
-        $pelanggan = Pelanggan::all();
-        return view('admin.DataPelanggan', compact('pelanggan'));
+        // Ambil data pelanggan berdasarkan user yang login
+        $pelanggan = \App\Models\Pelanggan::where('user_id', auth()->id())->first();
+
+        // Jika user belum punya pelanggan → kontrak kosong
+        if (!$pelanggan) {
+            return view('pelanggan.home', ['contracts' => collect()]);
+        }
+
+        // Ambil kontrak berdasarkan pelanggan_id
+        $contracts = KontrakLeasing::with(['kendaraan', 'angsuran'])
+            ->where('pelanggan_id', $pelanggan->pelanggan_id)
+            ->get();
+
+        return view('pelanggan.home', compact('contracts'));
     }
 
-    public function store(Request $request)
+
+    /**
+     * Halaman bayar cicilan.
+     */
+    public function bayar()
     {
-        $data = $request->validate([
-            'nama_lengkap' => 'required',
-            'nik' => 'required',
-            'no_hp' => 'required',
-            'email' => 'required|email',
-            'pekerjaan' => 'required',
-            'alamat' => 'required'
-        ]);
-
-        Pelanggan::create($data);
-
-        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil ditambahkan.');
+        return view('pelanggan.bayar');
     }
 
-    public function update(Request $request, Pelanggan $pelanggan)
+    /**
+     * Halaman riwayat pembayaran cicilan.
+     */
+    public function riwayat()
     {
-        $data = $request->validate([
-            'nama_lengkap' => 'required',
-            'nik' => 'required',
-            'no_hp' => 'required',
-            'email' => 'required|email',
-            'pekerjaan' => 'required',
-            'alamat' => 'required'
-        ]);
-
-        $pelanggan->update($data);
-
-        return redirect()->route('pelanggan.index')->with('success', 'Data pelanggan berhasil diperbarui.');
-    }
-
-    public function destroy(Pelanggan $pelanggan)
-    {
-        $pelanggan->delete();
-
-        return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil dihapus.');
+        return view('pelanggan.riwayat');
     }
 }

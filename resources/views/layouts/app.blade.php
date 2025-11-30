@@ -57,7 +57,9 @@
                             ];
                         } elseif (auth()->user()->role === 'pelanggan') {
                             $menuItems = [
-                                ['label' => 'Dashboard pelanggan', 'url' => '/pelanggan/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Kontrak Saya', 'url' => '/pelanggan/home', 'icon' => 'bi-house-door'],
+                                ['label' => 'Riwayat Bayar', 'url' => '/pelanggan/riwayat', 'icon' => 'bi-clock-history'],
+                                ['label' => 'Bayar Cicilan', 'url' => '/pelanggan/bayar', 'icon' => 'bi-credit-card'],
                             ];
                         } elseif (auth()->user()->role === 'manajer') {
                             $menuItems = [

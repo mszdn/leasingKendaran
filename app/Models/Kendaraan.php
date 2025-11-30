@@ -22,4 +22,5 @@ class Kendaraan extends Model
     {
         return $this->hasMany(KontrakLeasing::class, 'kendaraan_id');
     }
+
 }
