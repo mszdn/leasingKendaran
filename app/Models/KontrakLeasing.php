@@ -22,7 +22,8 @@ class KontrakLeasing extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'status_kontrak',
-        'status_verifikasi'
+        'status_verifikasi',
+        'marketing_id'
     ];
 
     public function user()

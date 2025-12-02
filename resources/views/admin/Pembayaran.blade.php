@@ -10,10 +10,9 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <div>
                     <h5 class="mb-1">Manajemen Pembayaran</h5>
-                    <small class="text-muted">{{ $angsuran->count() }} pembayaran tercatat dalam sistem</small>
+                    <small class="text-muted">{{ $angsuran->count() }} angsuran mendekati jatuh tempo</small>
                 </div>
 
-                <!-- Tombol Tambah Pembayaran -->
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahPembayaran">
                     <i class="bi bi-plus-lg me-2"></i> Tambah Pembayaran Manual
                 </button>
@@ -41,38 +40,18 @@
                         <tbody>
                             @foreach ($angsuran as $a)
                                 <tr>
-                                    <td>
-                                        <i class="bi bi-credit-card me-1 text-secondary"></i>
-                                        <span
-                                            class="font-monospace">ANG-{{ str_pad($a->angsuran_id, 3, '0', STR_PAD_LEFT) }}</span>
-                                    </td>
+                                    <td>ANG-{{ str_pad($a->angsuran_id, 3, '0', STR_PAD_LEFT) }}</td>
                                     <td>{{ $a->kontrak->pelanggan?->nama_lengkap ?? '-' }}</td>
-                                    <td>
-                                        <i class="bi bi-file-text me-1 text-secondary"></i>
-                                        {{ $a->kontrak->nomor_kontrak ?? '-' }}
-                                    </td>
-                                    <td><span class="badge bg-secondary">{{ $a->angsuran_ke }}</span></td>
+                                    <td>{{ $a->kontrak->nomor_kontrak ?? '-' }}</td>
+                                    <td>{{ $a->angsuran_ke }}</td>
                                     <td>Rp {{ number_format($a->jumlah_bayar, 0, ',', '.') }}</td>
                                     <td>{{ $a->denda ? 'Rp ' . number_format($a->denda, 0, ',', '.') : '-' }}</td>
-                                    <td><strong>Rp
-                                            {{ number_format(($a->jumlah_bayar ?? 0) + ($a->denda ?? 0), 0, ',', '.') }}</strong>
+                                    <td><b>Rp {{ number_format(($a->jumlah_bayar ?? 0) + ($a->denda ?? 0), 0, ',', '.') }}</b>
                                     </td>
-                                    <td>
-                                        <i class="bi bi-calendar me-1 text-secondary"></i>
-                                        {{ \Carbon\Carbon::parse($a->tanggal_jatuh_tempo)->format('d M Y') }}
+                                    <td>{{ \Carbon\Carbon::parse($a->tanggal_jatuh_tempo)->format('d M Y') }}</td>
+                                    <td>{{ $a->tanggal_bayar ? \Carbon\Carbon::parse($a->tanggal_bayar)->format('d M Y') : '-' }}
                                     </td>
-                                    <td>
-                                        {{ $a->tanggal_bayar ? \Carbon\Carbon::parse($a->tanggal_bayar)->format('d M Y') : '-' }}
-                                    </td>
-                                    <td>
-                                        <span class="badge 
-                                                                                @if($a->metode_pembayaran == 'transfer') bg-outline border text-dark
-                                                                                @elseif($a->metode_pembayaran == 'cash') bg-outline border text-dark
-                                                                                @elseif($a->metode_pembayaran == 'ewallet') bg-outline border text-dark
-                                                                                @endif">
-                                            {{ ucfirst($a->metode_pembayaran) }}
-                                        </span>
-                                    </td>
+                                    <td>{{ ucfirst($a->metode_pembayaran) }}</td>
                                     <td>
                                         @if($a->bukti_pembayaran)
                                             <a href="{{ asset('storage/' . $a->bukti_pembayaran) }}" target="_blank"
@@ -82,10 +61,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="badge 
-                                        @if($a->status_angsuran == 'lunas') bg-success
-                                        @elseif($a->status_angsuran == 'tertunda') bg-warning text-dark
-                                        @else bg-secondary @endif">
+                                        <span
+                                            class="badge @if($a->status_angsuran == 'lunas') bg-success @else bg-warning text-dark @endif">
                                             {{ ucfirst($a->status_angsuran) }}
                                         </span>
                                     </td>
@@ -115,30 +92,31 @@
 
                             <div class="col-md-6">
                                 <label class="form-label">Pilih Kontrak *</label>
-                                <select name="kontrak_id" class="form-select" required>
+                                <select name="kontrak_id" class="form-select" id="kontrak_select" required>
                                     <option value="">Pilih kontrak leasing</option>
                                     @foreach($kontrak as $k)
                                         <option value="{{ $k->kontrak_id }}">
-                                            {{ $k->nomor_kontrak }} - {{ $k->pelanggan?->nama_lengkap ?? '-' }}
+                                            {{ $k->nomor_kontrak }} - {{ $k->pelanggan?->nama_lengkap }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Angsuran Ke *</label>
-                                <input type="number" name="angsuran_ke" class="form-control" placeholder="1" required>
+                                <label class="form-label">Angsuran Tertunda *</label>
+                                <select name="angsuran_ke" id="angsuran_ke" class="form-select" required>
+                                    <option value="">Pilih kontrak terlebih dahulu</option>
+                                </select>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label">Jumlah Bayar (Rp) *</label>
-                                <input type="number" name="jumlah_bayar" class="form-control" placeholder="7500000"
-                                    required>
+                                <input type="number" name="jumlah_bayar" class="form-control" required>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label">Denda (Rp)</label>
-                                <input type="number" name="denda" class="form-control" placeholder="0">
+                                <input type="number" name="denda" class="form-control">
                             </div>
 
                             <div class="col-md-6">
@@ -182,5 +160,33 @@
             </div>
         </div>
     </div>
+
+    {{-- SCRIPT DROPDOWN ANGSURAN --}}
+    <script>
+        const kontrakData = @json($kontrak);
+
+        document.getElementById("kontrak_select").addEventListener("change", function () {
+            let id = this.value;
+            let dropdown = document.getElementById("angsuran_ke");
+
+            dropdown.innerHTML = "<option value=''>Memuat...</option>";
+
+            let kontrak = kontrakData.find(k => k.kontrak_id == id);
+
+            if (!kontrak || kontrak.angsuran.length === 0) {
+                dropdown.innerHTML = "<option value=''>Tidak ada angsuran tertunda</option>";
+                return;
+            }
+
+            dropdown.innerHTML = "";
+            kontrak.angsuran.forEach(a => {
+                dropdown.innerHTML += `
+                    <option value="${a.angsuran_ke}">
+                        Angsuran ke-${a.angsuran_ke} (Jatuh tempo: ${a.tanggal_jatuh_tempo})
+                    </option>
+                `;
+            });
+        });
+    </script>
 
 @endsection

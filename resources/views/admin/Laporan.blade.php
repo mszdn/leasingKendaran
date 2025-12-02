@@ -6,17 +6,50 @@
         <h1 class="mb-2">Laporan Keuangan</h1>
         <p class="text-muted mb-4">Selamat datang, {{ auth()->user()->username }}</p>
 
+        <!-- GENERATE LAPORAN -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-gear-fill text-primary"></i> Generate Laporan Bulanan
+                </h5>
+
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach ($periode as $p)
+                        @php
+                            $namaBulan = \Carbon\Carbon::create($p->tahun, $p->bulan)->format('F Y');
+                        @endphp
+
+                        <form action="{{ route('admin.Laporan.generate') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="bulan" value="{{ $p->bulan }}">
+                            <input type="hidden" name="tahun" value="{{ $p->tahun }}">
+                            <button class="btn btn-sm btn-primary">
+                                <i class="bi bi-file-earmark-plus"></i>
+                                {{ $namaBulan }}
+                            </button>
+                        </form>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
         <!-- TOTAL PENDAPATAN & TUNGGAKAN -->
         <div class="row mb-4">
             <!-- Total Pendapatan -->
             <div class="col-md-6 mb-3">
                 <div class="card" style="
-                        border-left: 4px solid #198754;
-                        border-right: 4px solid #198754;
-                        border-top: 1px solid #dee2e6;
-                        border-bottom: 1px solid #dee2e6;
-                        border-radius: .375rem;
-                    ">
+                                            border-left: 4px solid #198754;
+                                            border-right: 4px solid #198754;
+                                            border-top: 1px solid #dee2e6;
+                                            border-bottom: 1px solid #dee2e6;
+                                            border-radius: .375rem;
+                                        ">
                     <div class="card-body">
                         <h5 class="card-title d-flex align-items-center gap-2">
                             <i class="bi bi-graph-up text-success"></i> Total Pendapatan
@@ -34,12 +67,12 @@
             <!-- Total Tunggakan -->
             <div class="col-md-6 mb-3">
                 <div class="card" style="
-                border-left: 4px solid #dc3545;
-                border-right: 4px solid #dc3545;
-                border-top: 1px solid #dee2e6;
-                border-bottom: 1px solid #dee2e6;
-                border-radius: .375rem;
-            ">
+                                    border-left: 4px solid #dc3545;
+                                    border-right: 4px solid #dc3545;
+                                    border-top: 1px solid #dee2e6;
+                                    border-bottom: 1px solid #dee2e6;
+                                    border-radius: .375rem;
+                                ">
                     <div class="card-body">
                         <h5 class="card-title d-flex align-items-center gap-2">
                             <i class="bi bi-exclamation-circle text-danger"></i> Total Tunggakan
@@ -64,12 +97,12 @@
 
                 <div class="col-12 mb-4">
                     <div class="card" style="
-                        border-left: 4px solid #0d6efd;
-                        border-right: 4px solid #0d6efd;
-                        border-top: 1px solid #dee2e6;
-                        border-bottom: 1px solid #dee2e6;
-                        border-radius: .375rem;
-                    ">
+                                                                border-left: 4px solid #0d6efd;
+                                                                border-right: 4px solid #0d6efd;
+                                                                border-top: 1px solid #dee2e6;
+                                                                border-bottom: 1px solid #dee2e6;
+                                                                border-radius: .375rem;
+                                                            ">
                         <div class="card-body">
                             <h5 class="card-title d-flex align-items-center gap-2">
                                 <i class="bi bi-bar-chart text-primary"></i>

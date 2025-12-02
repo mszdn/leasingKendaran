@@ -98,7 +98,7 @@
                             <th>Jumlah</th>
                             <th>Status</th>
                             <th>Tanggal</th>
-                            <th class="text-end">Aksi</th>
+                            <!-- <th class="text-end">Aksi</th> -->
                         </tr>
                     </thead>
 
@@ -108,7 +108,7 @@
                             <tr>
                                 <td>{{ $k->nomor_kontrak }}</td>
 
-                                <td>{{ $k->user->nama_lengkap ?? '-' }}</td>
+                                <td>{{ $k->pelanggan->nama_lengkap ?? '-' }}</td>
 
                                 <td>
                                     {{ $k->kendaraan->merk ?? '' }}
@@ -129,17 +129,17 @@
 
                                 <td>{{ $k->tanggal_mulai }}</td>
 
-                                <td class="text-end">
+                                <!-- <td class="text-end">
                                     @if($k->status_verifikasi === 'pending')
                                         <button class="btn btn-sm btn-primary">
                                             <i class="bi bi-check-circle me-1"></i> Verifikasi
                                         </button>
-                                    @endif
+                                    @endif -->
 
-                                    <button class="btn btn-sm btn-outline-dark">
+                                    <!-- <button class="btn btn-sm btn-outline-dark">
                                         <i class="bi bi-eye me-1"></i> Detail
-                                    </button>
-                                </td>
+                                    </button> -->
+                                <!-- </td> -->
                             </tr>
                         @endforeach
 

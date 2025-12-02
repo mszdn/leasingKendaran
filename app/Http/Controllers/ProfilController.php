@@ -13,7 +13,7 @@ class ProfilController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('admin.profil', compact('user'));
+        return view('profil.profil', compact('user'));
     }
 
     // Update data pribadi
@@ -33,7 +33,7 @@ class ProfilController extends Controller
 
         $user->update($request->all());
 
-        return redirect()->route('admin.profil')->with('success', 'Profil berhasil diperbarui.');
+        return redirect()->route('profil.profil')->with('success', 'Profil berhasil diperbarui.');
     }
 
     // Update password
@@ -54,6 +54,6 @@ class ProfilController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        return redirect()->route('admin.profil')->with('success', 'Password berhasil diperbarui.');
+        return redirect()->route('profil.profil')->with('success', 'Password berhasil diperbarui.');
     }
 }

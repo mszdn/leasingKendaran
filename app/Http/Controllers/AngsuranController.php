@@ -10,8 +10,28 @@ class AngsuranController extends Controller
 {
     public function index()
     {
-        $angsuran = Angsuran::with('kontrak.pelanggan')->get();
-        $kontrak = KontrakLeasing::with('pelanggan')->get(); // untuk dropdown modal tambah
+        // Angsuran tertunda + mendekati jatuh tempo (7 hari)
+        $angsuran = Angsuran::with('kontrak.pelanggan')
+            ->where('status_angsuran', 'tertunda')
+            ->whereDate('tanggal_jatuh_tempo', '<=', now()->addDays(15))
+            ->orderBy('tanggal_jatuh_tempo', 'asc')
+            ->get();
+
+        // Kontrak yang memiliki angsuran tertunda + mendekati jatuh tempo
+        $kontrak = KontrakLeasing::with([
+            'pelanggan',
+            'angsuran' => function ($q) {
+                $q->where('status_angsuran', 'tertunda')
+                    ->whereDate('tanggal_jatuh_tempo', '<=', now()->addDays(15))
+                    ->orderBy('angsuran_ke', 'asc');
+            }
+        ])
+            ->whereHas('angsuran', function ($q) {
+                $q->where('status_angsuran', 'tertunda')
+                    ->whereDate('tanggal_jatuh_tempo', '<=', now()->addDays(15));
+            })
+            ->get();
+
         return view('admin.Pembayaran', compact('angsuran', 'kontrak'));
     }
 
@@ -28,8 +48,26 @@ class AngsuranController extends Controller
             'status_angsuran' => 'required|in:lunas,tertunda'
         ]);
 
-        Angsuran::create($data);
+        // Ambil angsuran yang cocok (harus tertunda)
+        $angsuran = Angsuran::where('kontrak_id', $request->kontrak_id)
+            ->where('angsuran_ke', $request->angsuran_ke)
+            ->where('status_angsuran', 'tertunda')
+            ->first();
 
-        return redirect()->route('admin.Pembayaran')->with('success', 'Pembayaran berhasil ditambahkan.');
+        if (!$angsuran) {
+            return back()->with('error', 'Angsuran tidak ditemukan atau sudah lunas.');
+        }
+
+        // Update data angsuran (BUKAN membuat baru)
+        $angsuran->update([
+            'jumlah_bayar' => $request->jumlah_bayar,
+            'denda' => $request->denda,
+            'tanggal_bayar' => $request->tanggal_bayar,
+            'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'status_angsuran' => $request->status_angsuran,
+        ]);
+
+        return redirect()->route('admin.Pembayaran')->with('success', 'Pembayaran berhasil diperbarui.');
     }
 }

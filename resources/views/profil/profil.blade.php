@@ -85,7 +85,7 @@
                                 <small class="text-muted">Perbarui informasi pribadi Anda di sini</small>
                             </div>
                             <div class="card-body">
-                                <form class="row g-3" action="{{ route('admin.profil.update') }}" method="POST">
+                                <form class="row g-3" action="{{ route('profil.profil.update') }}" method="POST">
                                     @csrf
 
                                     <div class="col-md-6">
@@ -137,7 +137,7 @@
                                 <small class="text-muted">Pastikan kata sandi Anda kuat dan aman</small>
                             </div>
                             <div class="card-body">
-                                <form class="row g-3" action="{{ route('admin.profil.password') }}" method="POST">
+                                <form class="row g-3" action="{{ route('profil.profil.password') }}" method="POST">
                                     @csrf
 
                                     <div class="col-12">

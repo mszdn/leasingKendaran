@@ -60,7 +60,7 @@
                                         </button>
 
                                         <!-- Delete -->
-                                        <form action="{{ route('pelanggan.destroy', $p->pelanggan_id) }}" method="POST"
+                                        <form action="{{ route('admin.DataPelanggan.delete', $p->pelanggan_id) }}" method="POST"
                                             class="d-inline" onsubmit="return confirm('Hapus pelanggan ini?')">
 
                                             @csrf
@@ -78,7 +78,8 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
 
-                                            <form action="{{ route('pelanggan.update', $p->pelanggan_id) }}" method="POST">
+                                            <form action="{{ route('admin.DataPelanggan.update', $p->pelanggan_id) }}"
+                                                method="POST">
                                                 @csrf
                                                 @method('PUT')
 
@@ -157,7 +158,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
-                <form action="{{ route('pelanggan.store') }}" method="POST">
+                <form action="{{ route('admin.DataPelanggan.store') }}" method="POST">
                     @csrf
 
                     <div class="modal-header">
@@ -169,9 +170,24 @@
 
                         <div class="row g-3">
 
+                            <!-- DROPDOWN USER -->
+                            <div class="col-md-6">
+                                <label class="form-label">Pilih Akun Pelanggan</label>
+                                <select name="user_id" id="selectUser" class="form-select" required>
+                                    <option value="">-- Pilih User Pelanggan --</option>
+                                    @foreach ($usersPelanggan as $u)
+                                        <option value="{{ $u->user_id }}" data-nama="{{ $u->username }}"
+                                            data-email="{{ $u->email }}" data-hp="{{ $u->no_hp }}"
+                                            data-alamat="{{ $u->alamat }}">
+                                            {{ $u->username }} (ID: {{ $u->user_id }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="col-md-6">
                                 <label class="form-label">Nama Lengkap</label>
-                                <input type="text" name="nama_lengkap" class="form-control" required>
+                                <input type="text" id="namaLengkap" name="nama_lengkap" class="form-control" required>
                             </div>
 
                             <div class="col-md-6">
@@ -180,13 +196,13 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">No. HP</label>
-                                <input type="text" name="no_hp" class="form-control" required>
+                                <label class="form-label">Email</label>
+                                <input type="email" id="emailUser" name="email" class="form-control" required>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" required>
+                                <label class="form-label">No. HP</label>
+                                <input type="text" id="hpUser" name="no_hp" class="form-control" required>
                             </div>
 
                             <div class="col-md-6">
@@ -196,7 +212,7 @@
 
                             <div class="col-12">
                                 <label class="form-label">Alamat Lengkap</label>
-                                <input type="text" name="alamat" class="form-control" required>
+                                <input type="text" id="alamatUser" name="alamat" class="form-control" required>
                             </div>
 
                         </div>
@@ -215,3 +231,78 @@
     </div>
 
 @endsection
+
+
+<!-- JS AUTO FILL -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // ambil elemen (bisa null jika tidak ada di halaman)
+        const selectUser = document.getElementById('selectUser');
+        const namaLengkap = document.getElementById('namaLengkap');
+        const emailUser = document.getElementById('emailUser');
+        const hpUser = document.getElementById('hpUser');
+        const alamatUser = document.getElementById('alamatUser');
+
+        if (!selectUser) {
+            // kalau null, hentikan dengan tenang (berguna jika file dipakai di halaman lain)
+            return;
+        }
+
+        selectUser.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+
+            // beberapa safety check kalau dataset kosong
+            namaLengkap && (namaLengkap.value = selected?.dataset?.nama ?? '');
+            emailUser && (emailUser.value = selected?.dataset?.email ?? '');
+            hpUser && (hpUser.value = selected?.dataset?.hp ?? '');
+            alamatUser.value = selected?.dataset?.alamat ?? '';
+        });
+
+        // OPTIONAL: jika modal bisa dibuka ulang dan ingin reset ketika membuka modal
+        const modalTambah = document.getElementById('modalTambah');
+        if (modalTambah) {
+            modalTambah.addEventListener('show.bs.modal', function () {
+                // reset fields jika perlu
+                selectUser.value = '';
+                namaLengkap && (namaLengkap.value = '');
+                emailUser && (emailUser.value = '');
+                hpUser && (hpUser.value = '');
+                alamatUser.value = '';
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const selectUser = document.getElementById('selectUser');
+        const namaLengkap = document.getElementById('namaLengkap');
+        const emailUser = document.getElementById('emailUser');
+        const hpUser = document.getElementById('hpUser');
+        const alamatUser = document.getElementById('alamatUser'); // ⬅ baru ditambahkan
+
+        if (!selectUser) return;
+
+        selectUser.addEventListener('change', function () {
+            const selected = this.options[this.selectedIndex];
+
+            namaLengkap.value = selected?.dataset?.nama ?? '';
+            emailUser.value = selected?.dataset?.email ?? '';
+            hpUser.value = selected?.dataset?.hp ?? '';
+            alamatUser.value = selected?.dataset?.alamat ?? ''; // ⬅ auto fill alamat
+        });
+
+        // reset saat modal dibuka ulang
+        const modalTambah = document.getElementById('modalTambah');
+        if (modalTambah) {
+            modalTambah.addEventListener('show.bs.modal', function () {
+                selectUser.value = '';
+                namaLengkap.value = '';
+                emailUser.value = '';
+                hpUser.value = '';
+                alamatUser.value = ''; // ⬅ reset alamat
+            });
+        }
+
+    });
+</script>

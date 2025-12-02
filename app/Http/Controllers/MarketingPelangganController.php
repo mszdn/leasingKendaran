@@ -6,20 +6,22 @@ use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class PelangganController extends Controller
+class MarketingPelangganController extends Controller
 {
-
+    // Tampilkan semua pelanggan untuk halaman marketing
     public function index()
     {
         $pelanggan = Pelanggan::all();
 
-        // Ambil user dengan role = pelanggan
-        $usersPelanggan = User::where('role', 'pelanggan')->get();
+        // Ambil user yang rolenya pelanggan
+        $users = User::where('role', 'pelanggan')->get();
 
-        return view('admin.DataPelanggan', compact('pelanggan', 'usersPelanggan'));
+        return view('marketing.pelanggan', compact('pelanggan', 'users'));
     }
 
 
+
+    // Simpan data pelanggan dari marketing
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,11 +36,11 @@ class PelangganController extends Controller
 
         Pelanggan::create($data);
 
-        return redirect()->route('admin.DataPelanggan')
+        return redirect()->route('marketing.pelanggan.index')
             ->with('success', 'Pelanggan berhasil ditambahkan.');
     }
 
-
+    // Update data pelanggan
     public function update(Request $request, Pelanggan $pelanggan)
     {
         $data = $request->validate([
@@ -52,13 +54,16 @@ class PelangganController extends Controller
 
         $pelanggan->update($data);
 
-        return redirect()->route('admin.DataPelanggan')->with('success', 'Data pelanggan berhasil diperbarui.');
+        return redirect()->route('marketing.pelanggan.index')
+            ->with('success', 'Data pelanggan berhasil diperbarui.');
     }
 
+    // Hapus pelanggan
     public function destroy(Pelanggan $pelanggan)
     {
         $pelanggan->delete();
 
-        return redirect()->route('admin.DataPelanggan')->with('success', 'Pelanggan berhasil dihapus.');
+        return redirect()->route('marketing.pelanggan.index')
+            ->with('success', 'Pelanggan berhasil dihapus.');
     }
 }

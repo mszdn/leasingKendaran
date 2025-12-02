@@ -65,7 +65,7 @@
 
                                     <td class="text-end">
 
-                                        <!-- Edit (tombol buka modal per user) -->
+                                        <!-- Edit -->
                                         <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#modalEdit{{ $u->user_id }}">
                                             <i class="bi bi-pencil"></i>
@@ -80,11 +80,10 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
-
                                     </td>
                                 </tr>
 
-                                {{-- MODAL EDIT — taruh di dalam loop supaya $u tersedia --}}
+                                <!-- MODAL EDIT -->
                                 <div class="modal fade" id="modalEdit{{ $u->user_id }}" tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -101,7 +100,7 @@
                                                 <div class="modal-body">
 
                                                     <div class="mb-3">
-                                                        <label class="form-label">Nama Lengkap</label>
+                                                        <label class="form-label">Nama Lengkap *</label>
                                                         <input type="text" name="nama_lengkap" class="form-control"
                                                             value="{{ $u->nama_lengkap }}" required>
                                                     </div>
@@ -119,9 +118,36 @@
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <label class="form-label">
-                                                            Password <small class="text-muted">(kosongkan jika tidak
-                                                                diganti)</small>
+                                                        <label class="form-label">No HP *</label>
+                                                        <input type="text" name="no_hp" class="form-control"
+                                                            value="{{ $u->no_hp }}" required>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Alamat *</label>
+                                                        <textarea name="alamat" class="form-control"
+                                                            required>{{ $u->alamat }}</textarea>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Tanggal Lahir *</label>
+                                                        <input type="date" name="tanggal_lahir" class="form-control"
+                                                            value="{{ $u->tanggal_lahir }}" required>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                                        <select name="jenis_kelamin" class="form-control" required>
+                                                            <option value="L" {{ $u->jenis_kelamin == 'L' ? 'selected' : '' }}>
+                                                                Laki-laki</option>
+                                                            <option value="P" {{ $u->jenis_kelamin == 'P' ? 'selected' : '' }}>
+                                                                Perempuan</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Password
+                                                            <small class="text-muted">(kosongkan jika tidak diganti)</small>
                                                         </label>
                                                         <input type="password" name="password" class="form-control">
                                                     </div>
@@ -129,11 +155,12 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Peran *</label>
                                                         <select name="role" class="form-control" required>
-                                                            <option value="admin" {{ $u->role === 'admin' ? 'selected' : '' }}>
+                                                            <option value="admin" {{ $u->role == 'admin' ? 'selected' : '' }}>
                                                                 Admin</option>
-                                                            <option value="marketing" {{ $u->role === 'marketing' ? 'selected' : '' }}>Marketing</option>
-                                                            <option value="manajer" {{ $u->role === 'manajer' ? 'selected' : '' }}>Manajer</option>
-                                                            <option value="pelanggan" {{ $u->role === 'pelanggan' ? 'selected' : '' }}>Pelanggan</option>
+                                                            <option value="marketing" {{ $u->role == 'marketing' ? 'selected' : '' }}>Marketing</option>
+                                                            <option value="manajer" {{ $u->role == 'manajer' ? 'selected' : '' }}>
+                                                                Manajer</option>
+                                                            <option value="pelanggan" {{ $u->role == 'pelanggan' ? 'selected' : '' }}>Pelanggan</option>
                                                         </select>
                                                     </div>
 
@@ -150,8 +177,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- END MODAL EDIT --}}
-
+                                <!-- END MODAL EDIT -->
                             @endforeach
 
                         </tbody>
@@ -163,8 +189,7 @@
         </div>
     </div>
 
-
-    {{-- MODAL TAMBAH (tetap di luar loop) --}}
+    <!-- MODAL TAMBAH -->
     <div class="modal fade" id="modalTambah" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,7 +205,7 @@
                     <div class="modal-body">
 
                         <div class="mb-3">
-                            <label class="form-label">Nama Lengkap</label>
+                            <label class="form-label">Nama Lengkap *</label>
                             <input type="text" name="nama_lengkap" class="form-control" required>
                         </div>
 
@@ -192,6 +217,30 @@
                         <div class="mb-3">
                             <label class="form-label">Email *</label>
                             <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">No HP *</label>
+                            <input type="text" name="no_hp" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Alamat *</label>
+                            <textarea name="alamat" class="form-control" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal Lahir *</label>
+                            <input type="date" name="tanggal_lahir" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                            <select name="jenis_kelamin" class="form-control">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+
                         </div>
 
                         <div class="mb-3">

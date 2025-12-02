@@ -1,165 +1,252 @@
 @extends('layouts.app')
 
 @section('content')
-<div>
-    <div class="mb-4 d-flex justify-content-between align-items-center">
-        <div>
-            <h2 class="text-dark mb-1">Dashboard Manajer</h2>
-            <p class="text-muted">Gambaran menyeluruh tentang kinerja bisnis dan analitik.</p>
-        </div>
 
-        <select class="form-select w-auto">
-            <option value="weekly">Mingguan</option>
-            <option value="monthly">Bulanan</option>
-            <option value="quarterly">Kuartalan</option>
-            <option value="yearly">Tahunan</option>
-        </select>
-    </div>
+    <div class="container-fluid">
 
-    {{-- ===== KARTU RINGKASAN ===== --}}
-    <div class="row g-3 mb-4">
-
-        {{-- TOTAL PENDAPATAN --}}
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6 class="text-muted">Total Pendapatan (YTD)</h6>
-                    <h4 class="text-dark">
-                        Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
-                    </h4>
-                    <p class="text-success small mt-1">+18.2% dari periode lalu</p>
-                </div>
+        {{-- ===== HEADER ===== --}}
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">Dashboard Manajer</h2>
+                <p class="text-muted">Gambaran menyeluruh tentang kinerja bisnis dan analitik.</p>
             </div>
         </div>
 
-        {{-- KONTRAK AKTIF --}}
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6 class="text-muted">Kontrak Aktif</h6>
-                    <h4 class="text-dark">{{ $kontrakAktif }}</h4>
-                    <p class="text-success small mt-1">+8.4% dari bulan lalu</p>
-                </div>
-            </div>
-        </div>
+        {{-- ===== TOP CARDS ===== --}}
+        <div class="row g-3 mb-4">
 
-        {{-- PEMBAYARAN TERLAMBAT --}}
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6 class="text-muted">Pembayaran Terlambat</h6>
-                    <h4 class="text-dark">{{ $pembayaranTerlambat }}</h4>
-                    <p class="text-danger small mt-1">
-                        Rp {{ number_format($pembayaranTerlambat * 100000, 0, ',', '.') }} tertunggak
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        {{-- TINGKAT PENAGIHAN --}}
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h6 class="text-muted">Tingkat Penagihan</h6>
-                    <h4 class="text-dark">{{ number_format(0, 1) }}%</h4>
-                    <p class="text-success small mt-1">Di atas target (95%)</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    {{-- ===== CHART PENGGANTI (STATIC) ===== --}}
-    <div class="row g-3 mb-4">
-
-        {{-- Placeholder Chart --}}
-        <div class="col-lg-8">
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between">
-                    <div>
-                        <h6 class="mb-0">Tren Pendapatan Bulanan</h6>
-                        <small class="text-muted">Perbandingan Pendapatan vs Target</small>
-                    </div>
-                    <button class="btn btn-outline-secondary btn-sm">Ekspor</button>
-                </div>
-                <div class="card-body">
-                    <div class="bg-light border rounded p-5 text-center text-muted">
-                        (Chart Placeholder)
+            {{-- Total Pendapatan --}}
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">Total Pendapatan (YTD)</p>
+                        <h4 class="fw-bold">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</h4>
+                        <small class="text-success">+18.2% dari periode lalu</small>
                     </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Pie Chart Placeholder --}}
-        <div class="col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h6 class="mb-0">Kontrak per Status</h6>
-                    <small class="text-muted">Gambaran distribusi</small>
-                </div>
-                <div class="card-body">
-                    <div class="bg-light border rounded p-5 text-center text-muted">
-                        (Pie Chart Placeholder)
+            {{-- Kontrak Aktif --}}
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">Kontrak Aktif</p>
+                        <h4 class="fw-bold">{{ $kontrakAktif }}</h4>
+                        <small class="text-success">+8.4% dari bulan lalu</small>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-
-    {{-- ===== STATISTIK + TABEL ===== --}}
-    <div class="row g-3">
-
-        {{-- Late payments chart placeholder --}}
-        <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h6 class="mb-0">Statistik Pembayaran Terlambat</h6>
-                    <small class="text-muted">Rincian per periode keterlambatan</small>
-                </div>
-                <div class="card-body">
-                    <div class="bg-light border rounded p-4 text-center text-muted">
-                        (Bar Chart Placeholder)
+            {{-- Pembayaran Terlambat --}}
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">Pembayaran Terlambat</p>
+                        <h4 class="fw-bold">{{ $pembayaranTerlambat }}</h4>
+                        <small class="text-danger">
+                            Rp {{ number_format($pembayaranTerlambat * 100000, 0, ',', '.') }} tertunggak
+                        </small>
                     </div>
                 </div>
             </div>
+
+            {{-- Tingkat Penagihan --}}
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+                        <p class="text-muted mb-1">Tingkat Penagihan</p>
+                        <h4 class="fw-bold">0.0%</h4>
+                        <small class="text-success">Di atas target (0%)</small>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        {{-- Marketing Table --}}
-        <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h6 class="mb-0">Staf Marketing Terbaik</h6>
-                    <small class="text-muted">Kinerja berdasarkan kontrak baru</small>
-                </div>
-                <div class="card-body p-0">
-                    <table class="table mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Nama</th>
-                                <th class="text-end">Kontrak</th>
-                                <th class="text-end">Tingkat Konv.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+        {{-- ===== TREND & PIE CHART ===== --}}
+        <div class="row g-3 mb-4">
 
-                            @foreach($topMarketing as $m)
+            {{-- Line Chart --}}
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-bold mb-0">Tren Pendapatan Bulanan</h6>
+                            <small class="text-muted">Perbandingan Pendapatan vs Target</small>
+                        </div>
+                        <a href="{{ route('export.PendapatanBulanan') }}" class="btn btn-light border shadow-sm btn-sm">
+                            <i class="bi bi-download"></i> Ekspor
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+                        <canvas id="incomeChart" height="130"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Pie Chart --}}
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="fw-bold mb-0">Kontrak per Status</h6>
+                        <small class="text-muted">Gambaran distribusi</small>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="statusChart" height="260"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- ===== BAR CHART + TABLE ===== --}}
+        <div class="row g-3 mb-4">
+
+            {{-- Bar Chart --}}
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="fw-bold mb-0">Statistik Pembayaran Terlambat</h6>
+                        <small class="text-muted">Rincian per periode keterlambatan</small>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="latePaymentChart" height="180"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Marketing Table --}}
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="fw-bold mb-0">Staf Marketing Terbaik</h6>
+                        <small class="text-muted">Kinerja berdasarkan kontrak baru</small>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
                                 <tr>
-                                    <td>{{ $m['nama'] }}</td>
-                                    <td class="text-end">
-                                        <span class="badge bg-secondary">{{ $m['jumlahKontrak'] }}</span>
-                                    </td>
-                                    <td class="text-end">{{ number_format(0, 1) }}%</td>
+                                    <th>Nama</th>
+                                    <th class="text-end">Kontrak</th>
+                                    <th class="text-end">Tingkat Konv.</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach($topMarketing as $m)
+                                    <tr>
+                                        <td>{{ $m['nama'] }}</td>
+                                        <td class="text-end">
+                                            <span class="badge bg-secondary">{{ $m['jumlahKontrak'] }}</span>
+                                        </td>
+                                        <td class="text-end">{{ $m['tingkatKonversi'] }}%</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                        </tbody>
-                    </table>
                 </div>
             </div>
+
         </div>
 
     </div>
 
-</div>
+    {{-- ===== CHART.JS CDN ===== --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {{-- ===== CHART SCRIPTS ===== --}}
+    @php
+        // Pastikan $kategoriTerlambat ada dan default 0
+        $barChartData = [
+            $kategoriTerlambat['0_7'] ?? 0,
+            $kategoriTerlambat['8_15'] ?? 0,
+            $kategoriTerlambat['16_30'] ?? 0,
+            $kategoriTerlambat['30_up'] ?? 0,
+        ];
+    @endphp
+
+    <script>
+        // ===== LINE CHART =====
+        new Chart(document.getElementById("incomeChart"), {
+            type: "line",
+            data: {
+                labels: {!! json_encode($labelBulan) !!},
+                datasets: [{
+                    label: "Pendapatan",
+                    data: {!! json_encode($dataPendapatan) !!},
+                    borderWidth: 3,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "bottom" }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0, // nilai minimum
+                        max: 500000000, // nilai maksimum (misalnya 1 miliar)
+                        ticks: {
+                            callback: function (value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                }
+            }
+
+
+        });
+
+        // ===== PIE CHART =====
+        new Chart(document.getElementById("statusChart"), {
+            type: "pie",
+            data: {
+                labels: ['aktif', 'selesai', 'terlambat'],
+                datasets: [{
+                    data: [
+                                {{ $statusKontrak['aktif'] ?? 0 }},
+                                {{ $statusKontrak['selesai'] ?? 0 }},
+                        {{ $statusKontrak['terlambat'] ?? 0 }}
+                    ],
+                    backgroundColor: ['#0d6efd', '#198754', '#dc3545']
+                }]
+            },
+            options: {
+                plugins: { legend: { position: "bottom" } }
+            }
+        });
+
+        // ===== BAR CHART =====
+        new Chart(document.getElementById("latePaymentChart"), {
+            type: "bar",
+            data: {
+                labels: ["0–7 hari", "8–15 hari", "16–30 hari", ">30 hari"],
+                datasets: [{
+                    label: "Jumlah Terlambat",
+                    data: @json($barChartData),
+                    backgroundColor: '#0d6efd',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "bottom" }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }
+            }
+        });
+    </script>
+
 @endsection

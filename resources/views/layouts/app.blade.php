@@ -53,11 +53,15 @@
                                 ['label' => 'Kontrak Leasing', 'url' => '/admin/KontrakLeasing', 'icon' => 'bi-journal-text'],
                                 ['label' => 'Pembayaran', 'url' => '/admin/Pembayaran', 'icon' => 'bi-cash-stack'],
                                 ['label' => 'Laporan', 'url' => '/admin/Laporan', 'icon' => 'bi-bar-chart-line'],
-                                ['label' => 'Profil', 'url' => '/admin/profil', 'icon' => 'bi-person-circle'],
+                                ['label' => 'Profil', 'url' => '/profil/profil', 'icon' => 'bi-person-circle'],
                             ];
                         } elseif (auth()->user()->role === 'pelanggan') {
                             $menuItems = [
-                                ['label' => 'Dashboard pelanggan', 'url' => '/pelangan/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Kontrak Saya', 'url' => '/pelanggan/home', 'icon' => 'bi-house-door'],
+                                ['label' => 'Riwayat Bayar', 'url' => '/pelanggan/riwayat', 'icon' => 'bi-clock-history'],
+                                ['label' => 'Bayar Cicilan', 'url' => '/pelanggan/bayar', 'icon' => 'bi-credit-card'],
+                                ['label' => 'Profil', 'url' => '/profil/profil', 'icon' => 'bi-person-circle'],
+
                             ];
                         } elseif (auth()->user()->role === 'manajer') {
                             $menuItems = [
@@ -66,11 +70,18 @@
                                 ['label' => 'Analisis Pembayaran', 'url' => '/manajer/AnalisisPembayaran', 'icon' => 'bi-cash-stack'],
                                 ['label' => 'Laporan Pendapatan', 'url' => '/manajer/LaporanPendapatan', 'icon' => 'bi-bar-chart-line'],
                                 ['label' => 'Marketing Performance', 'url' => '/manajer/MarketingPerformance', 'icon' => 'bi-graph-up-arrow'],
-                                ['label' => 'Profil', 'url' => '/manajer/PageProfil', 'icon' => 'bi-person-circle'],
+                                ['label' => 'Profil', 'url' => '/profil/profil', 'icon' => 'bi-person-circle'],
+
                             ];
                         } elseif (auth()->user()->role === 'marketing') {
                             $menuItems = [
-                                ['label' => 'Dashboard marketing', 'url' => '/marketing/dashboard', 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Dashboard', 'url' => route('marketing.dashboard'), 'icon' => 'bi-speedometer2'],
+                                ['label' => 'Ajukan Kontrak', 'url' => route('marketing.ajukanKontrak'), 'icon' => 'bi-journal-plus'],
+                                ['label' => 'Data Pelanggan', 'url' => route('marketing.pelanggan.index'), 'icon' => 'bi-person-vcard'],
+                                
+                                ['label' => 'Pengajuan Saya', 'url' => route('marketing.ajuan'), 'icon' => 'bi-file-earmark-text'],
+                                ['label' => 'Pengingat Pembayaran', 'url' => route('marketing.pengingat'), 'icon' => 'bi-bell'],
+                                ['label' => 'Profil', 'url' => '/profil/profil', 'icon' => 'bi-person-circle'],
                             ];
                         }
                     @endphp
