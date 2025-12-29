@@ -43,16 +43,45 @@
                         <h6 class="mb-0">Tingkat Kelengkapan Profil</h6>
                     </div>
                     <div class="card-body">
+                        @php
+                            $checks = [
+                                'Nama Lengkap' => !empty($user->nama_lengkap),
+                                'Email' => !empty($user->email),
+                                'Email Terverifikasi' => !empty($user->email_verified_at),
+                                'Nomor Telepon' => !empty($user->no_hp),
+                                'Alamat' => !empty($user->alamat),
+                                'Tanggal Lahir' => !empty($user->tanggal_lahir),
+                                'Bio' => !empty($user->bio),
+                                'Foto Profil' => !empty($user->foto_profil),
+                            ];
+
+                            $totalChecks = count($checks);
+                            $passed = collect($checks)->filter()->count();
+                            $percent = (int) round(($passed / $totalChecks) * 100);
+                            $missing = collect($checks)->filter(function ($v) {
+                                return !$v;
+                            })->keys()->all();
+                        @endphp
+
                         <div class="d-flex justify-content-between small mb-1">
                             <span class="text-muted">Kemajuan</span>
-                            <span>85%</span>
+                            <span>{{ $percent }}%</span>
                         </div>
 
                         <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-primary" style="width: 85%;"></div>
+                            <div class="progress-bar bg-primary" style="width: {{ $percent }}%;"></div>
                         </div>
 
-                        <p class="small text-muted mt-2">Lengkapi bio dan verifikasi email untuk mencapai 100%</p>
+                        @if($percent === 100)
+                            <p class="small text-success mt-2 mb-0">Profil lengkap — terima kasih!</p>
+                        @else
+                            <p class="small text-muted mt-2 mb-1">Lengkapi item berikut untuk mencapai 100%:</p>
+                            <ul class="small mb-0">
+                                @foreach($missing as $m)
+                                    <li>{{ $m }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 </div>
 

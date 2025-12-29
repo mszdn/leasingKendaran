@@ -16,7 +16,7 @@
         <div class="row g-3 mb-4">
 
             {{-- Total Pendapatan --}}
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-body">
                         <p class="text-muted mb-1">Total Pendapatan (YTD)</p>
@@ -27,7 +27,7 @@
             </div>
 
             {{-- Kontrak Aktif --}}
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-body">
                         <p class="text-muted mb-1">Kontrak Aktif</p>
@@ -38,7 +38,7 @@
             </div>
 
             {{-- Pembayaran Terlambat --}}
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-body">
                         <p class="text-muted mb-1">Pembayaran Terlambat</p>
@@ -51,7 +51,7 @@
             </div>
 
             {{-- Tingkat Penagihan --}}
-            <div class="col-md-3">
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-body">
                         <p class="text-muted mb-1">Tingkat Penagihan</p>
@@ -67,7 +67,7 @@
         <div class="row g-3 mb-4">
 
             {{-- Line Chart --}}
-            <div class="col-lg-8">
+            <div class="col-12 col-lg-8">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
                         <div>
@@ -80,20 +80,24 @@
                     </div>
 
                     <div class="card-body">
-                        <canvas id="incomeChart" height="130"></canvas>
+                        <div style="height:220px; max-height:40vh;">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {{-- Pie Chart --}}
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-white border-0">
                         <h6 class="fw-bold mb-0">Kontrak per Status</h6>
                         <small class="text-muted">Gambaran distribusi</small>
                     </div>
                     <div class="card-body">
-                        <canvas id="statusChart" height="260"></canvas>
+                        <div style="height:220px; max-height:40vh;">
+                            <canvas id="statusChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,20 +108,22 @@
         <div class="row g-3 mb-4">
 
             {{-- Bar Chart --}}
-            <div class="col-lg-6">
+            <div class="col-12 col-lg-6">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-white border-0">
                         <h6 class="fw-bold mb-0">Statistik Pembayaran Terlambat</h6>
                         <small class="text-muted">Rincian per periode keterlambatan</small>
                     </div>
                     <div class="card-body">
-                        <canvas id="latePaymentChart" height="180"></canvas>
+                        <div style="height:200px; max-height:36vh;">
+                            <canvas id="latePaymentChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {{-- Marketing Table --}}
-            <div class="col-lg-6">
+            <div class="col-12 col-lg-6">
                 <div class="card shadow-sm border-0 rounded-3">
                     <div class="card-header bg-white border-0">
                         <h6 class="fw-bold mb-0">Staf Marketing Terbaik</h6>
@@ -183,6 +189,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: { position: "bottom" }
                 },
@@ -210,14 +217,16 @@
                 labels: ['aktif', 'selesai', 'terlambat'],
                 datasets: [{
                     data: [
-                                {{ $statusKontrak['aktif'] ?? 0 }},
-                                {{ $statusKontrak['selesai'] ?? 0 }},
+                                    {{ $statusKontrak['aktif'] ?? 0 }},
+                                    {{ $statusKontrak['selesai'] ?? 0 }},
                         {{ $statusKontrak['terlambat'] ?? 0 }}
                     ],
                     backgroundColor: ['#0d6efd', '#198754', '#dc3545']
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { position: "bottom" } }
             }
         });
@@ -236,6 +245,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: { position: "bottom" }
                 },
