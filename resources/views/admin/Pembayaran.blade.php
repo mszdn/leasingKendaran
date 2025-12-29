@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
 
         <h1 class="mb-3">Pembayaran</h1>
         <p>Selamat datang, {{ auth()->user()->username }}</p>
 
         <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div
+                class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <div>
                     <h5 class="mb-1">Manajemen Pembayaran</h5>
                     <small class="text-muted">{{ $angsuran->count() }} angsuran mendekati jatuh tempo</small>
@@ -28,12 +29,12 @@
                                 <th>No. Kontrak</th>
                                 <th>Angsuran Ke-</th>
                                 <th>Jumlah Bayar</th>
-                                <th>Denda</th>
+                                <th class="d-none d-md-table-cell">Denda</th>
                                 <th>Total</th>
-                                <th>Tgl. Jatuh Tempo</th>
-                                <th>Tgl. Bayar</th>
-                                <th>Metode</th>
-                                <th>Bukti</th>
+                                <th class="d-none d-md-table-cell">Tgl. Jatuh Tempo</th>
+                                <th class="d-none d-md-table-cell">Tgl. Bayar</th>
+                                <th class="d-none d-md-table-cell">Metode</th>
+                                <th class="d-none d-md-table-cell">Bukti</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -45,14 +46,17 @@
                                     <td>{{ $a->kontrak->nomor_kontrak ?? '-' }}</td>
                                     <td>{{ $a->angsuran_ke }}</td>
                                     <td>Rp {{ number_format($a->jumlah_bayar, 0, ',', '.') }}</td>
-                                    <td>{{ $a->denda ? 'Rp ' . number_format($a->denda, 0, ',', '.') : '-' }}</td>
+                                    <td class="d-none d-md-table-cell">
+                                        {{ $a->denda ? 'Rp ' . number_format($a->denda, 0, ',', '.') : '-' }}</td>
                                     <td><b>Rp {{ number_format(($a->jumlah_bayar ?? 0) + ($a->denda ?? 0), 0, ',', '.') }}</b>
                                     </td>
-                                    <td>{{ \Carbon\Carbon::parse($a->tanggal_jatuh_tempo)->format('d M Y') }}</td>
-                                    <td>{{ $a->tanggal_bayar ? \Carbon\Carbon::parse($a->tanggal_bayar)->format('d M Y') : '-' }}
+                                    <td class="d-none d-md-table-cell">
+                                        {{ \Carbon\Carbon::parse($a->tanggal_jatuh_tempo)->format('d M Y') }}</td>
+                                    <td class="d-none d-md-table-cell">
+                                        {{ $a->tanggal_bayar ? \Carbon\Carbon::parse($a->tanggal_bayar)->format('d M Y') : '-' }}
                                     </td>
-                                    <td>{{ ucfirst($a->metode_pembayaran) }}</td>
-                                    <td>
+                                    <td class="d-none d-md-table-cell">{{ ucfirst($a->metode_pembayaran) }}</td>
+                                    <td class="d-none d-md-table-cell">
                                         @if($a->bukti_pembayaran)
                                             <a href="{{ asset('storage/' . $a->bukti_pembayaran) }}" target="_blank"
                                                 class="btn btn-sm btn-outline-primary">Lihat</a>
@@ -78,7 +82,7 @@
 
     <!-- MODAL TAMBAH PEMBAYARAN -->
     <div class="modal fade" id="modalTambahPembayaran" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <form action="{{ route('admin.Pembayaran.store') }}" method="POST">
                     @csrf
@@ -87,7 +91,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="max-height:60vh; overflow-y:auto;">
                         <div class="row g-3">
 
                             <div class="col-md-6">
@@ -181,10 +185,10 @@
             dropdown.innerHTML = "";
             kontrak.angsuran.forEach(a => {
                 dropdown.innerHTML += `
-                    <option value="${a.angsuran_ke}">
-                        Angsuran ke-${a.angsuran_ke} (Jatuh tempo: ${a.tanggal_jatuh_tempo})
-                    </option>
-                `;
+                        <option value="${a.angsuran_ke}">
+                            Angsuran ke-${a.angsuran_ke} (Jatuh tempo: ${a.tanggal_jatuh_tempo})
+                        </option>
+                    `;
             });
         });
     </script>

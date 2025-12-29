@@ -2,14 +2,15 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container-fluid">
 
         <h2 class="mb-4">Manajemen Pengguna</h2>
         <p class="text-muted">Selamat datang, {{ auth()->user()->username }}</p>
 
         <!-- Card -->
         <div class="card shadow-sm">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div
+                class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <div>
                     <h5 class="card-title mb-0">Data Pengguna</h5>
                     <small class="text-muted">Kelola pengguna sistem dan peran mereka</small>
@@ -29,7 +30,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Nama</th>
-                                <th>Email</th>
+                                <th class="d-none d-md-table-cell">Email</th>
                                 <th>Peran</th>
                                 <th>Status</th>
                                 <th class="text-end">Aksi</th>
@@ -41,7 +42,7 @@
                             @foreach ($users as $u)
                                 <tr>
                                     <td>{{ $u->nama_lengkap ?? '-' }}</td>
-                                    <td>{{ $u->email ?? '-' }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $u->email ?? '-' }}</td>
 
                                     <td>
                                         @if ($u->role === 'admin')
@@ -64,28 +65,28 @@
                                     </td>
 
                                     <td class="text-end">
-
-                                        <!-- Edit -->
-                                        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalEdit{{ $u->user_id }}">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-
-                                        <!-- Delete -->
-                                        <form action="{{ route('user.destroy', $u->user_id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-outline-danger btn-sm"
-                                                onclick="return confirm('Hapus pengguna ini?')">
-                                                <i class="bi bi-trash"></i>
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                                            <button class="btn btn-outline-secondary btn-sm px-2" data-bs-toggle="modal"
+                                                data-bs-target="#modalEdit{{ $u->user_id }}">
+                                                <i class="bi bi-pencil"></i>
                                             </button>
-                                        </form>
+
+                                            <form action="{{ route('user.destroy', $u->user_id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-outline-danger btn-sm px-2"
+                                                    onclick="return confirm('Hapus pengguna ini?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
 
                                 <!-- MODAL EDIT -->
                                 <div class="modal fade" id="modalEdit{{ $u->user_id }}" tabindex="-1">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-dialog-scrollable">
                                         <div class="modal-content">
 
                                             <form action="{{ route('user.update', $u->user_id) }}" method="POST">
@@ -191,7 +192,7 @@
 
     <!-- MODAL TAMBAH -->
     <div class="modal fade" id="modalTambah" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
 
                 <form action="{{ route('user.store') }}" method="POST">
@@ -202,7 +203,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="max-height:60vh; overflow-y:auto;">
 
                         <div class="mb-3">
                             <label class="form-label">Nama Lengkap *</label>

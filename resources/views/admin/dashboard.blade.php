@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
 
         {{-- Header --}}
         <div class="mb-4">
@@ -89,62 +89,64 @@
 
             <div class="card-body">
 
-                <table class="table table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th>ID Kontrak</th>
-                            <th>Pelanggan</th>
-                            <th>Kendaraan</th>
-                            <th>Jumlah</th>
-                            <th>Status</th>
-                            <th>Tanggal</th>
-                            <!-- <th class="text-end">Aksi</th> -->
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @foreach($kontrakTerbaru as $k)
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
                             <tr>
-                                <td>{{ $k->nomor_kontrak }}</td>
+                                <th>ID Kontrak</th>
+                                <th>Pelanggan</th>
+                                <th>Kendaraan</th>
+                                <th>Jumlah</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <!-- <th class="text-end">Aksi</th> -->
+                            </tr>
+                        </thead>
 
-                                <td>{{ $k->pelanggan->nama_lengkap ?? '-' }}</td>
+                        <tbody>
 
-                                <td>
-                                    {{ $k->kendaraan->merk ?? '' }}
-                                    {{ $k->kendaraan->tipe ?? '' }}
-                                </td>
+                            @foreach($kontrakTerbaru as $k)
+                                <tr>
+                                    <td>{{ $k->nomor_kontrak }}</td>
 
-                                <td>Rp {{ number_format($k->total_pembayaran, 0, ',', '.') }}</td>
+                                    <td>{{ $k->pelanggan->nama_lengkap ?? '-' }}</td>
 
-                                <td>
-                                    @if($k->status_verifikasi === 'pending')
-                                        <span class="badge bg-warning text-dark">Menunggu</span>
-                                    @elseif($k->status_verifikasi === 'approved')
-                                        <span class="badge bg-success">Aktif</span>
-                                    @else
-                                        <span class="badge bg-secondary">Terverifikasi</span>
-                                    @endif
-                                </td>
+                                    <td>
+                                        {{ $k->kendaraan->merk ?? '' }}
+                                        {{ $k->kendaraan->tipe ?? '' }}
+                                    </td>
 
-                                <td>{{ $k->tanggal_mulai }}</td>
+                                    <td>Rp {{ number_format($k->total_pembayaran, 0, ',', '.') }}</td>
 
-                                <!-- <td class="text-end">
-                                    @if($k->status_verifikasi === 'pending')
-                                        <button class="btn btn-sm btn-primary">
-                                            <i class="bi bi-check-circle me-1"></i> Verifikasi
-                                        </button>
-                                    @endif -->
+                                    <td>
+                                        @if($k->status_verifikasi === 'pending')
+                                            <span class="badge bg-warning text-dark">Menunggu</span>
+                                        @elseif($k->status_verifikasi === 'approved')
+                                            <span class="badge bg-success">Aktif</span>
+                                        @else
+                                            <span class="badge bg-secondary">Terverifikasi</span>
+                                        @endif
+                                    </td>
+
+                                    <td>{{ $k->tanggal_mulai }}</td>
+
+                                    <!-- <td class="text-end">
+                                                            @if($k->status_verifikasi === 'pending')
+                                                                <button class="btn btn-sm btn-primary">
+                                                                    <i class="bi bi-check-circle me-1"></i> Verifikasi
+                                                                </button>
+                                                            @endif -->
 
                                     <!-- <button class="btn btn-sm btn-outline-dark">
-                                        <i class="bi bi-eye me-1"></i> Detail
-                                    </button> -->
-                                <!-- </td> -->
-                            </tr>
-                        @endforeach
+                                                                <i class="bi bi-eye me-1"></i> Detail
+                                                            </button> -->
+                                    <!-- </td> -->
+                                </tr>
+                            @endforeach
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>

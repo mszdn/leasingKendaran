@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
 
 
         <h1 class="mb-3">Kontrak Leasing</h1>
         <p>Selamat datang, {{ auth()->user()->username }}</p>
 
         <div class="card shadow-sm">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <div class="">
                     <h4 class="mb-1">Kontrak Leasing</h4>
                     <p class="text-muted">{{ $kontrak->count() }} kontrak dalam sistem</p>
@@ -30,10 +30,10 @@
                                     <th>Pelanggan</th>
                                     <th>Kendaraan</th>
                                     <th>Tenor</th>
-                                    <th>DP</th>
-                                    <th>Angsuran/Bulan</th>
-                                    <th>Total</th>
-                                    <th>Periode</th>
+                                    <th class="d-none d-md-table-cell">DP</th>
+                                    <th class="d-none d-md-table-cell">Angsuran/Bulan</th>
+                                    <th class="d-none d-md-table-cell">Total</th>
+                                    <th class="d-none d-md-table-cell">Periode</th>
                                     <th>Status Kontrak</th>
                                     <th>Verifikasi</th>
                                     <th>Aksi</th>
@@ -46,10 +46,10 @@
                                         <td>{{ $k->pelanggan?->nama_lengkap ?? '-' }}</td>
                                         <td>{{ $k->kendaraan?->merk ?? '-' }}</td>
                                         <td><i class="bi bi-calendar text-secondary me-1"></i>{{ $k->tenor_bulan }} bulan</td>
-                                        <td>Rp {{ number_format($k->dp_amount, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($k->angsuran_per_bulan, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($k->total_pembayaran, 0, ',', '.') }}</td>
-                                        <td>
+                                        <td class="d-none d-md-table-cell">Rp {{ number_format($k->dp_amount, 0, ',', '.') }}</td>
+                                        <td class="d-none d-md-table-cell">Rp {{ number_format($k->angsuran_per_bulan, 0, ',', '.') }}</td>
+                                        <td class="d-none d-md-table-cell">Rp {{ number_format($k->total_pembayaran, 0, ',', '.') }}</td>
+                                        <td class="d-none d-md-table-cell">
                                             <div>{{ \Carbon\Carbon::parse($k->tanggal_mulai)->format('d/m/Y') }}</div>
                                             <small class="text-muted">s/d
                                                 {{ \Carbon\Carbon::parse($k->tanggal_selesai)->format('d/m/Y') }}</small>
@@ -84,10 +84,9 @@
 
                                         {{-- Aksi --}}
                                         <td>
-                                            <div class="d-flex gap-2">
-
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
                                                 {{-- Tombol Edit --}}
-                                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                <button class="btn btn-warning btn-sm px-2" data-bs-toggle="modal"
                                                     data-bs-target="#modalEdit{{ $k->kontrak_id }}">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
@@ -97,7 +96,7 @@
                                                     onsubmit="return confirm('Yakin ingin menghapus kontrak ini?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm">
+                                                    <button class="btn btn-danger btn-sm px-2">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
                                                 </form>
@@ -108,7 +107,7 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
-                                                        <button class="btn btn-success btn-sm">
+                                                        <button class="btn btn-success btn-sm px-2">
                                                             <i class="bi bi-check-circle"></i>
                                                         </button>
                                                     </form>
@@ -117,7 +116,7 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
-                                                        <button class="btn btn-warning btn-sm">
+                                                        <button class="btn btn-warning btn-sm px-2">
                                                             <i class="bi bi-x-circle"></i>
                                                         </button>
                                                     </form>
@@ -130,7 +129,7 @@
 
                                     {{-- MODAL EDIT PER KONTRAK --}}
                                     <div class="modal fade" id="modalEdit{{ $k->kontrak_id }}" tabindex="-1">
-                                        <div class="modal-dialog modal-lg">
+                                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                             <div class="modal-content">
 
                                                 <div class="modal-header">
@@ -142,7 +141,7 @@
                                                     @csrf
                                                     @method('PUT')
 
-                                                    <div class="modal-body row g-3">
+                                                    <div class="modal-body row g-3" style="max-height:60vh; overflow-y:auto;">
 
                                                         <div class="col-md-6">
                                                             <label class="form-label">Nomor Kontrak</label>
@@ -250,7 +249,7 @@
 
     {{-- MODAL CREATE KONTRAK --}}
     <div class="modal fade" id="modalCreateKontrak" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -260,7 +259,7 @@
 
                 <form action="{{ route('kontrak.store') }}" method="POST">
                     @csrf
-                    <div class="modal-body row g-3">
+                    <div class="modal-body row g-3" style="max-height:60vh; overflow-y:auto;">
 
                         <div class="col-md-6">
                             <label class="form-label">Nomor Kontrak</label>

@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
 
         <h1 class="mb-3">Data Kendaraan</h1>
         <p>Selamat datang, {{ auth()->user()->username }}</p>
 
         <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div
+                class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <div>
                     <h5 class="mb-0">Manajemen Kendaraan</h5>
                     <small class="text-muted">{{ $kendaraan->count() }} kendaraan terdaftar</small>
@@ -29,13 +30,13 @@
                                 </div>
 
                                 <div class="card-body d-flex justify-content-between align-items-center">
-                                    <span class="badge {{ $k->status == 'Tersedia' ? 'bg-success' : 'bg-secondary' }}">
+                                    <span class="badge {{ $k->status == 'tersedia' ? 'bg-success' : 'bg-danger' }}">
                                         {{ $k->status }}
                                     </span>
 
                                     <div class="d-flex gap-2">
                                         <!-- Edit -->
-                                        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                        <button class="btn btn-outline-secondary btn-sm px-2" data-bs-toggle="modal"
                                             data-bs-target="#modalEdit{{ $k->kendaraan_id }}">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
@@ -45,7 +46,7 @@
                                             onsubmit="return confirm('Hapus kendaraan ini?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-outline-danger btn-sm">
+                                            <button class="btn btn-outline-danger btn-sm px-2">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
@@ -56,7 +57,7 @@
 
                         <!-- MODAL EDIT -->
                         <div class="modal fade" id="modalEdit{{ $k->kendaraan_id }}" tabindex="-1">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
 
                                     <form action="{{ route('kendaraan.update', $k->kendaraan_id) }}" method="POST">
@@ -68,7 +69,7 @@
                                             <button class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
 
-                                        <div class="modal-body">
+                                        <div class="modal-body" style="max-height:60vh; overflow-y:auto;">
 
                                             <div class="mb-2">
                                                 <label class="form-label">Merk</label>
@@ -131,7 +132,7 @@
 
     <!-- MODAL TAMBAH KENDARAAN -->
     <div class="modal fade" id="modalTambah" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
 
                 <form action="{{ route('kendaraan.store') }}" method="POST">
@@ -142,7 +143,7 @@
                         <button class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="max-height:60vh; overflow-y:auto;">
 
                         <div class="mb-2">
                             <label class="form-label">Merk</label>

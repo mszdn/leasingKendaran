@@ -2,14 +2,15 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container-fluid">
 
         <h2 class="mb-4">Data Pelanggan</h2>
         <p class="text-muted">Selamat datang, {{ auth()->user()->username }}</p>
 
         <div class="card shadow-sm">
 
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div
+                class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                 <div>
                     <h5 class="card-title mb-0 d-flex align-items-center gap-2">
                         <i class="bi bi-people text-primary"></i>
@@ -31,11 +32,11 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nama</th>
-                                <th>NIK</th>
+                                <th class="d-none d-md-table-cell">NIK</th>
                                 <th>No. HP</th>
-                                <th>Email</th>
-                                <th>Pekerjaan</th>
-                                <th>Alamat</th>
+                                <th class="d-none d-md-table-cell">Email</th>
+                                <th class="d-none d-md-table-cell">Pekerjaan</th>
+                                <th class="d-none d-md-table-cell">Alamat</th>
                                 <th class="text-end">Aksi</th>
                             </tr>
                         </thead>
@@ -45,37 +46,39 @@
                                 <tr>
                                     <td>{{ $p->pelanggan_id }}</td>
                                     <td class="fw-bold">{{ $p->nama_lengkap }}</td>
-                                    <td>{{ $p->nik }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $p->nik }}</td>
                                     <td>{{ $p->no_hp }}</td>
-                                    <td>{{ $p->email }}</td>
-                                    <td>{{ $p->pekerjaan }}</td>
-                                    <td style="max-width: 200px;" class="text-truncate">{{ $p->alamat }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $p->email }}</td>
+                                    <td class="d-none d-md-table-cell">{{ $p->pekerjaan }}</td>
+                                    <td class="d-none d-md-table-cell" style="max-width: 200px;" class="text-truncate">
+                                        {{ $p->alamat }}
+                                    </td>
 
                                     <td class="text-end">
-
-                                        <!-- Edit -->
-                                        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#modalEdit{{ $p->pelanggan_id }}">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-
-                                        <!-- Delete -->
-                                        <form action="{{ route('admin.DataPelanggan.delete', $p->pelanggan_id) }}" method="POST"
-                                            class="d-inline" onsubmit="return confirm('Hapus pelanggan ini?')">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button class="btn btn-outline-danger btn-sm">
-                                                <i class="bi bi-trash"></i>
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                                            <button class="btn btn-outline-secondary btn-sm px-2" data-bs-toggle="modal"
+                                                data-bs-target="#modalEdit{{ $p->pelanggan_id }}">
+                                                <i class="bi bi-pencil"></i>
                                             </button>
-                                        </form>
+
+                                            <form action="{{ route('admin.DataPelanggan.delete', $p->pelanggan_id) }}"
+                                                method="POST" class="d-inline"
+                                                onsubmit="return confirm('Hapus pelanggan ini?')">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button class="btn btn-outline-danger btn-sm px-2">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
 
                                 <!-- MODAL EDIT -->
                                 <div class="modal fade" id="modalEdit{{ $p->pelanggan_id }}" tabindex="-1">
-                                    <div class="modal-dialog modal-lg">
+                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                         <div class="modal-content">
 
                                             <form action="{{ route('admin.DataPelanggan.update', $p->pelanggan_id) }}"
@@ -88,7 +91,7 @@
                                                     <button class="btn-close" data-bs-dismiss="modal"></button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="max-height:60vh; overflow-y:auto;">
                                                     <div class="row g-3">
 
                                                         <div class="col-md-6">
@@ -155,7 +158,7 @@
 
     <!-- MODAL TAMBAH -->
     <div class="modal fade" id="modalTambah" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
 
                 <form action="{{ route('admin.DataPelanggan.store') }}" method="POST">
@@ -166,7 +169,7 @@
                         <button class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="max-height:60vh; overflow-y:auto;">
 
                         <div class="row g-3">
 
