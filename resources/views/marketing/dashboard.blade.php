@@ -2,6 +2,51 @@
 
 @section('content')
 
+    @push('styles')
+        <style>
+            /* Responsive dashboard utilities moved here */
+            .card-clickable {
+                cursor: pointer
+            }
+
+            .stat-circle {
+                width: clamp(38px, 8vw, 56px);
+                height: clamp(38px, 8vw, 56px);
+            }
+
+            .stat-circle .stat-count {
+                font-size: clamp(.9rem, 1.8vw, 1.1rem)
+            }
+
+            /* Ensure table cells wrap on small screens and remain readable */
+            .table td,
+            .table th {
+                vertical-align: middle
+            }
+
+            @media (max-width:575.98px) {
+                .table {
+                    font-size: .95rem
+                }
+
+                .table td,
+                .table th {
+                    white-space: normal
+                }
+            }
+
+            /* Small visual tweak so cards take equal height in row */
+            .card.h-100 {
+                display: flex;
+                flex-direction: column
+            }
+
+            .card.h-100 .card-body {
+                flex: 1
+            }
+        </style>
+    @endpush
+
     <div class="mb-4">
         <h2 class="text-dark">Dashboard Marketing</h2>
         <p class="text-muted">Kelola pendaftaran pelanggan dan pengajuan kontrak.</p>
@@ -11,15 +56,15 @@
     <div class="row mb-4">
 
         <!-- Daftar Pelanggan -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0" onclick="window.location='{{ route('marketing.pelanggan.index') }}'"
-                style="cursor: pointer;">
+        <div class="col-12 col-sm-6 col-md-4 mb-3">
+            <div class="card shadow-sm border-0 h-100 card-clickable" role="button" tabindex="0"
+                onclick="window.location='{{ route('marketing.pelanggan.index') }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <i class="bi bi-person-plus text-primary fs-2"></i>
-                        <div class="rounded-circle bg-primary bg-opacity-10 d-flex justify-content-center align-items-center"
-                            style="width: 50px; height: 50px;">
-                            <span class="text-primary fw-bold">{{ $pelangganCount ?? 0 }}</span>
+                        <div
+                            class="rounded-circle bg-primary bg-opacity-10 d-flex justify-content-center align-items-center stat-circle">
+                            <span class="text-primary fw-bold stat-count">{{ $pelangganCount ?? 0 }}</span>
                         </div>
                     </div>
                     <h5 class="mt-3">Daftar Pelanggan</h5>
@@ -29,15 +74,15 @@
         </div>
 
         <!-- Ajukan Kontrak -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0" onclick="window.location='{{ route('marketing.ajukanKontrak') }}'"
-                style="cursor: pointer;">
+        <div class="col-12 col-sm-6 col-md-4 mb-3">
+            <div class="card shadow-sm border-0 h-100 card-clickable" role="button" tabindex="0"
+                onclick="window.location='{{ route('marketing.ajukanKontrak') }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <i class="bi bi-file-earmark-text text-success fs-2"></i>
-                        <div class="rounded-circle bg-success bg-opacity-10 d-flex justify-content-center align-items-center"
-                            style="width: 50px; height: 50px;">
-                            <span class="text-success fw-bold">{{ $kontraks->count() }}</span>
+                        <div
+                            class="rounded-circle bg-success bg-opacity-10 d-flex justify-content-center align-items-center stat-circle">
+                            <span class="text-success fw-bold stat-count">{{ $kontraks->count() }}</span>
                         </div>
                     </div>
                     <h5 class="mt-3">Ajukan Kontrak</h5>
@@ -47,15 +92,15 @@
         </div>
 
         <!-- Pengingat Pembayaran -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0" onclick="window.location='{{ route('marketing.pengingat') }}'"
-                style="cursor: pointer;">
+        <div class="col-12 col-sm-6 col-md-4 mb-3">
+            <div class="card shadow-sm border-0 h-100 card-clickable" role="button" tabindex="0"
+                onclick="window.location='{{ route('marketing.pengingat') }}'">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <i class="bi bi-bell text-warning fs-2"></i>
-                        <div class="rounded-circle bg-warning bg-opacity-10 d-flex justify-content-center align-items-center"
-                            style="width: 50px; height: 50px;">
-                            <span class="text-warning fw-bold">{{ $pendingCount ?? 0 }}</span>
+                        <div
+                            class="rounded-circle bg-warning bg-opacity-10 d-flex justify-content-center align-items-center stat-circle">
+                            <span class="text-warning fw-bold stat-count">{{ $pendingCount ?? 0 }}</span>
                         </div>
                     </div>
                     <h5 class="mt-3">Pengingat Pembayaran</h5>
@@ -97,12 +142,12 @@
 
                                 <td>
                                     <span class="badge
-                                                                @if($kontrak->status_verifikasi == 'pending') bg-warning text-dark
-                                                                @elseif($kontrak->status_verifikasi == 'approved') bg-success
-                                                                @elseif($kontrak->status_verifikasi == 'rejected') bg-danger
-                                                                @elseif($kontrak->status_verifikasi == 'Menunggu Pembayaran') bg-info text-dark
-                                                                @else bg-secondary
-                                                                @endif">
+                                                                                @if($kontrak->status_verifikasi == 'pending') bg-warning text-dark
+                                                                                @elseif($kontrak->status_verifikasi == 'approved') bg-success
+                                                                                @elseif($kontrak->status_verifikasi == 'rejected') bg-danger
+                                                                                @elseif($kontrak->status_verifikasi == 'Menunggu Pembayaran') bg-info text-dark
+                                                                                @else bg-secondary
+                                                                                @endif">
                                         {{ $kontrak->status_verifikasi }}
                                     </span>
                                 </td>
