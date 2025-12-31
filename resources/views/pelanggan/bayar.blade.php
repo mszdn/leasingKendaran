@@ -11,7 +11,7 @@
         <div class="row">
 
             <!-- FORM PEMBAYARAN -->
-            <div class="col-lg-8 mb-4">
+            <div class="col-12 col-lg-8 mb-4">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-1">Detail Pembayaran</h5>
@@ -71,7 +71,7 @@
             </div>
 
             <!-- RINGKASAN PEMBAYARAN -->
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4">
 
                 <div class="card mb-3">
                     <div class="card-header">
@@ -80,43 +80,44 @@
 
                     <div class="card-body">
 
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">ID Kontrak</span>
-                            <span>{{ $kontrak->kontrak_id }}</span>
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">ID Kontrak</div>
+                            <div class="col-6 text-end">{{ $kontrak->kontrak_id }}</div>
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">Kendaraan</span>
-                            <span>{{ $kontrak->kendaraan->nama_kendaraan }}</span>
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">Kendaraan</div>
+                            <div class="col-6 text-end">{{ $kontrak->kendaraan->nama_kendaraan }}</div>
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">Angsuran Ke</span>
-                            <span>{{ $angsuran->angsuran_ke }}</span>
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">Angsuran Ke</div>
+                            <div class="col-6 text-end">{{ $angsuran->angsuran_ke }}</div>
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">Jatuh Tempo</span>
-                            <span>{{ date('d M Y', strtotime($angsuran->tanggal_jatuh_tempo)) }}</span>
-                        </div>
-
-                        <hr>
-
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">Jumlah Tagihan</span>
-                            <span>Rp {{ number_format($angsuran->jumlah_bayar, 0, ',', '.') }}</span>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted">Denda</span>
-                            <span>Rp {{ number_format($angsuran->denda, 0, ',', '.') }}</span>
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">Jatuh Tempo</div>
+                            <div class="col-6 text-end">{{ date('d M Y', strtotime($angsuran->tanggal_jatuh_tempo)) }}</div>
                         </div>
 
                         <hr>
 
-                        <div class="d-flex justify-content-between fw-bold">
-                            <span>Total</span>
-                            <span>Rp {{ number_format($angsuran->jumlah_bayar + $angsuran->denda, 0, ',', '.') }}</span>
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">Jumlah Tagihan</div>
+                            <div class="col-6 text-end">Rp {{ number_format($angsuran->jumlah_bayar, 0, ',', '.') }}</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">Denda</div>
+                            <div class="col-6 text-end">Rp {{ number_format($angsuran->denda, 0, ',', '.') }}</div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row fw-bold">
+                            <div class="col-6">Total</div>
+                            <div class="col-6 text-end">Rp
+                                {{ number_format($angsuran->jumlah_bayar + $angsuran->denda, 0, ',', '.') }}</div>
                         </div>
 
                     </div>

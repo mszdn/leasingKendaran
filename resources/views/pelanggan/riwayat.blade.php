@@ -8,70 +8,72 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID Pembayaran</th>
-                        <th>Tanggal</th>
-                        <th>Jumlah</th>
-                        <th>Metode</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @forelse ($riwayat as $r)
+            <div class="table-responsive" style="-webkit-overflow-scrolling: touch;">
+                <table class="table table-bordered table-striped mb-0" style="min-width:720px;">
+                    <thead>
                         <tr>
-                            <td>{{ $r->angsuran_id }}</td>
+                            <th>ID Pembayaran</th>
+                            <th>Tanggal</th>
+                            <th>Jumlah</th>
+                            <th>Metode</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
 
-                            <td>
-                                @if ($r->tanggal_bayar)
-                                    {{ date('d M Y', strtotime($r->tanggal_bayar)) }}
-                                @else
-                                    -
-                                @endif
-                            </td>
+                    <tbody>
 
-                            <td>
-                                Rp {{ number_format($r->jumlah_bayar + $r->denda, 0, ',', '.') }}
-                            </td>
+                        @forelse ($riwayat as $r)
+                            <tr>
+                                <td>{{ $r->angsuran_id }}</td>
 
-                            <td>
-                                @if ($r->metode_pembayaran)
-                                    {{ ucfirst($r->metode_pembayaran) }}
-                                @else
-                                    -
-                                @endif
-                            </td>
-
-                            <td>
-                                @if ($r->status_angsuran == 'lunas')
-                                    <span class="badge bg-success">
-                                        <i class="bi bi-check-circle me-1"></i> lunas
-                                    </span>
-                                @elseif ($r->status_angsuran == 'tertunda')
-                                    <span class="badge bg-warning text-dark">
-                                        <i class="bi bi-exclamation-circle me-1"></i> Tertunda
-                                    </span>
-                                @else
-                                    <span class="badge bg-secondary">
+                                <td>
+                                    @if ($r->tanggal_bayar)
+                                        {{ date('d M Y', strtotime($r->tanggal_bayar)) }}
+                                    @else
                                         -
-                                    </span>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">
-                                Belum ada riwayat pembayaran
-                            </td>
-                        </tr>
-                    @endforelse
+                                    @endif
+                                </td>
 
-                </tbody>
+                                <td>
+                                    Rp {{ number_format($r->jumlah_bayar + $r->denda, 0, ',', '.') }}
+                                </td>
 
-            </table>
+                                <td>
+                                    @if ($r->metode_pembayaran)
+                                        {{ ucfirst($r->metode_pembayaran) }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if ($r->status_angsuran == 'lunas')
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle me-1"></i> lunas
+                                        </span>
+                                    @elseif ($r->status_angsuran == 'tertunda')
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-exclamation-circle me-1"></i> Tertunda
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary">
+                                            -
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">
+                                    Belum ada riwayat pembayaran
+                                </td>
+                            </tr>
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+            </div>
         </div>
     </div>
 

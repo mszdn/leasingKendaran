@@ -16,7 +16,7 @@
                 <div class="row mb-4">
 
                     {{-- Pembayaran Berikutnya --}}
-                    <div class="col-md-4 mb-3">
+                    <div class="col-12 col-md-4 mb-3">
                         <div class="card p-3">
                             <small class="text-muted">Pembayaran Berikutnya</small>
                             <h5 class="mt-2">
@@ -29,7 +29,7 @@
                     </div>
 
                     {{-- Sisa Cicilan --}}
-                    <div class="col-md-4 mb-3">
+                    <div class="col-12 col-md-4 mb-3">
                         <div class="card p-3">
                             <small class="text-muted">Sisa Cicilan</small>
                             <h5 class="mt-2">{{ $c->total_pembayaran }} cicilan</h5>
@@ -38,7 +38,7 @@
                     </div>
 
                     {{-- Status Kontrak --}}
-                    <div class="col-md-4 mb-3">
+                    <div class="col-12 col-md-4 mb-3">
                         <div class="card p-3">
                             <small class="text-muted">Status Kontrak</small>
                             <h5 class="mt-2">{{ $c->status_kontrak ?? '-' }}</h5>
@@ -69,7 +69,7 @@
                         <div class="row">
 
                             {{-- Periode & Cicilan --}}
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <p class="text-muted mb-0">Periode Kontrak</p>
                                 <p>
                                     {{ date('d M Y', strtotime($c->tanggal_mulai)) }} -
@@ -81,7 +81,7 @@
                             </div>
 
                             {{-- Next & Latest Due --}}
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
 
                                 <p class="text-muted mb-0">Jatuh Tempo Berikutnya</p>
                                 <p>{{ $c->next_due ? date('d M Y', strtotime($c->next_due->tanggal_jatuh_tempo)) : '-' }}</p>
@@ -104,18 +104,20 @@
                             </div>
 
                             <div class="progress">
-                                <div class="progress-bar" style="width: {{ $c->progress }}%"></div>
+                                <div class="progress-bar" role="progressbar" style="width: {{ $c->progress }}%" aria-valuenow="{{ $c->progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
 
-                        {{-- BUTTONS --}}
-                        <a href="{{ route('pelanggan.bayar') }}" class="btn btn-primary">
-                            <i class="bi bi-credit-card me-1"></i> Bayar Sekarang
-                        </a>
+                        {{-- BUTTONS: stack on mobile, inline on md+ --}}
+                        <div class="d-grid gap-2 d-md-flex">
+                            <a href="{{ route('pelanggan.bayar') }}" class="btn btn-primary me-md-2">
+                                <i class="bi bi-credit-card me-1"></i> Bayar Sekarang
+                            </a>
 
-                        <a href="{{ route('pelanggan.riwayat') }}" class="btn btn-outline-secondary">
-                            Lihat Riwayat Bayar
-                        </a>
+                            <a href="{{ route('pelanggan.riwayat') }}" class="btn btn-outline-secondary">
+                                Lihat Riwayat Bayar
+                            </a>
+                        </div>
 
                     </div>
                 </div>
